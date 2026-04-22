@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>株式会社K-TEC | 京都市山科区の建設会社</title>
+  <meta name="description" content="京都市山科区を拠点とする「株式会社K-TEC」の公式ウェブサイト。土木・建設事業を通じて、社会の基盤を創造します。従業員5名、少数精鋭のプロフェッショナル集団です。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-logo">
+      <a href="#">
+        <img src="assets/logo.png" alt="株式会社K-TEC ロゴ">
+        <span class="logo-text">株式会社K-TEC</span>
+      </a>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#services">事業内容</a></li>
+        <li><a href="#about">会社概要</a></li>
+        <li><a href="#contact">お問い合わせ</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-logo-animate-container">
+        <div class="core-light"></div>
+        <div class="flash"></div>
+        <img class="hero-animate-logo" src="assets/logo.png" alt="株式会社K-TEC">
+        <div class="white-burst"></div>
+      </div>
+      <div class="hero-subtitle">UNWAVERING TECHNOLOGY FOR THE NEXT GENERATION</div>
+      <!-- Lupin animation will be triggered via JS here -->
+      <h1 class="hero-title">次代へと繋ぐ、揺るぎない技術</h1>
+      <p class="hero-description">京都市山科区から、次代へと繋ぐ揺るぎない礎を。<br>少数精鋭のエリート集団が、最高品質の施工をお届けします。</p>
+      <a href="#contact" class="hero-btn">詳しく見る</a>
+    </div>
+  </section>
+
+  <!-- Service Section -->
+  <section id="services" class="section">
+    <div class="container">
+      <h2 class="section-title">事業内容</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <h3>土木工事</h3>
+          <p>道路、橋梁、宅地造成などの土木一式工事。地域の基盤を支える、確かな技術と品質を提供します。</p>
+        </div>
+        <div class="service-card">
+          <h3>各種管工事</h3>
+          <p>上下水道や配管など、社会のライフラインを構築する埋設工事。高度な技能で確実なインフラを実現します。</p>
+        </div>
+        <div class="service-card">
+          <h3>インバート工事</h3>
+          <p>都市の見えないライフラインを足元から支える、K-TECの確かな技術力です。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="section" style="background-color: #f8f9fa;">
+    <div class="container about-grid">
+      <div class="about-text">
+        <h2 class="section-title">会社概要</h2>
+        <p>株式会社K-TECは、京都市山科区を拠点とする建設会社です。私たちは「技術と信頼」を信条に、地域のインフラを支え、より安全で快適な街づくりに貢献しています。少数精鋭のプロフェッショナル集団だからこそ可能な、迅速かつ丁寧な施工が私たちの強みです。</p>
+        
+        <table class="profile-table" style="margin-top: 2rem;">
+          <tr>
+            <th>会社名</th>
+            <td>株式会社K-TEC</td>
+          </tr>
+          <tr>
+            <th>代表者</th>
+            <td>代表取締役 寺田浩司</td>
+          </tr>
+          <tr>
+            <th>所在地</th>
+            <td>京都市山科区勧修寺西金ケ崎256-1</td>
+          </tr>
+          <tr>
+            <th>許可番号</th>
+            <td>京都府知事(般-4)第40092号</td>
+          </tr>
+        </table>
+      </div>
+      <div class="about-visual" style="position: relative; display: flex; align-items: center; justify-content: center;">
+        <!-- K photo with feathered/blurred edges -->
+        <div style="position: relative; width: 100%; max-width: 550px; border-radius: 15px; overflow: hidden; box-shadow: 0 15px 45px rgba(0,0,0,0.1);">
+          <img src="K.JPG" style="width: 100%; height: auto; display: block; transition: transform 0.4s ease;" alt="株式会社K-TEC" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          <!-- Edge blurring overlay -->
+          <div style="position: absolute; inset: 0; box-shadow: inset 0 0 50px 10px #f8f9fa; pointer-events: none; border-radius: 15px;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recruitment Section -->
+  <section id="recruitment" class="section recruitment">
+    <div class="container recruit-content">
+      <h2 class="recruit-title lupin-trigger" data-text="成長していく時間を共に" data-highlight="成長">成長していく時間を共に</h2>
+      <p>K-TECでは、共に成長できる仲間を募集しています。建設のプロフェッショナルとして、社会の基盤を共に作りませんか？少数精鋭だからこそ、一人ひとりの挑戦が会社全体の成長に直結します。</p>
+      <a href="#contact-form" class="recruit-btn">採用について問い合わせる</a>
+    </div>
+  </section>
+
+  <!-- Contact & Google Map Section -->
+  <section id="contact" class="section">
+    <div class="container contact-layout">
+      <h2 class="section-title">お問い合わせ</h2>
+      <div class="contact-info">
+        <div class="info-item">
+          <div class="info-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <div>
+            <strong>所在地</strong><br>
+            京都市山科区勧修寺西金ケ崎256-1
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            </svg>
+          </div>
+          <div>
+            <strong>電話番号 (代表)</strong><br>
+            090-9549-8894
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <div>
+            <strong>メールアドレス</strong><br>
+            k-tec@circus.ocn.ne.jp
+          </div>
+        </div>
+      </div>
+      
+      <!-- Google Map Integration -->
+      <div class="map-container">
+        <!-- Assuming central Ritto City for the placeholder map (approx Shin-zenkoji area) -->
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3269.4674712398555!2d135.80345097617478!3d34.957448370716484!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60010f3775f00001%3A0xc31920875e533c3a!2z44CSNjA3LTgyMjUg5Lqs6YO95bqc5Lqs6YO95biC5bGx56eR5Yy66勧5L-u5a-66KW_6YeR44Kx5bSO77yS77yV77yW4oiS77yR!5e0!3m2!1sja!2sjp!4v1712309000000!5m2!1sja!2sjp" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+
+      <!-- Contact Form Section -->
+      <div id="contact-form" class="contact-form-container">
+        <form class="contact-form" action="#" method="post">
+          <div class="form-group">
+            <label for="name">氏名<span>必須</span></label>
+            <input type="text" id="name" name="name" placeholder="例：山田 太郎" required>
+          </div>
+          <div class="form-group">
+            <label for="email">メールアドレス<span>必須</span></label>
+            <input type="email" id="email" name="email" placeholder="例：example@mail.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">電話番号</label>
+            <input type="tel" id="phone" name="phone" placeholder="例：090-0000-0000">
+          </div>
+          <div class="form-group">
+            <label for="message">お問い合わせ内容<span>必須</span></label>
+            <textarea id="message" name="message" rows="5" placeholder="ご質問や採用に関するお問い合わせなど、お気軽にご記入ください" required></textarea>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="submit-btn">内容を送信する</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-logo">
+          <img src="assets/logo.png" alt="K-TEC logo">
+          <p>株式会社K-TEC<br>京都市山科区を拠点とする総合建設業</p>
+        </div>
+        <div>
+          <h4>MENU</h4>
+          <ul style="margin-top: 1rem;">
+            <li><a href="#services">事業内容</a></li>
+            <li><a href="#about">会社概要</a></li>
+            <li><a href="#contact">お問い合わせ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>CONTACT</h4>
+          <p style="margin-top: 1rem;">TEL: 090-9549-8894</p>
+          <p>京都市山科区勧修寺西金ケ崎256-1</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 株式会社K-TEC All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
