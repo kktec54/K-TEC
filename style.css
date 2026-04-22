@@ -65,8 +65,13 @@ html {
 body {
   font-family: 'Noto Sans JP', 'Outfit', sans-serif;
   color: var(--color-text);
+  background-color: #ffffff;
   line-height: 1.6;
   overflow-x: hidden;
+  /* Optimize Japanese line breaks */
+  word-break: normal;
+  overflow-wrap: break-word;
+  line-break: strict;
 }
 
 h1, h2, h3, h4, .title-font {
@@ -86,7 +91,21 @@ ul {
 
 img {
   max-width: 100%;
+  height: auto;
   display: block;
+}
+
+/* --- Typography Utilities --- */
+.pc-br { display: inline; }
+.sp-br { display: none; }
+
+.text-balance {
+  text-wrap: balance;
+}
+
+@media (max-width: 768px) {
+  .pc-br { display: none; }
+  .sp-br { display: block; height: 0; }
 }
 
 /* --- Layout Components --- */
@@ -295,7 +314,9 @@ header.scrolled .header-logo img {
   object-fit: contain;
   opacity: 0;
   transform: scale(0.84);
-  filter: brightness(2.2) blur(10px) drop-shadow(0 0 14px rgba(255, 255, 255, 1));
+  /* Use multiple filters: brightness for reveal, and contrast to keep colors crisp */
+  filter: brightness(2) blur(8px) drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+  mix-blend-mode: multiply; /* Insurance for any remaining white pixels in the logo edges */
 }
 .hero-logo-animate-container.is-animating .hero-animate-logo {
   animation: logoReveal 5.8s cubic-bezier(.2,.72,.2,1) 0.25s forwards;
@@ -373,8 +394,8 @@ header.scrolled .header-logo img {
   font-size: 3.5rem; /* Reduced from 4.5rem */
   margin-bottom: 1.5rem;
   letter-spacing: -0.05rem;
-  word-break: keep-all;
-  overflow-wrap: break-word;
+  line-height: 1.3;
+  text-wrap: balance;
   opacity: 0; /* Hidden initially for synchronizing with Lupin */
 }
 
@@ -559,8 +580,7 @@ header.scrolled .header-logo img {
   line-height: 1.8;
   max-width: 650px;
   margin: 0 auto;
-  word-break: keep-all;
-  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 @media (max-width: 768px) {

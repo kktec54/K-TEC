@@ -17,35 +17,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Lupin-style Typing Animation ---
     const lupinAnimate = (element, text, highlightText = "") => {
-        element.innerHTML = ''; // Clear initial
-        const chars = text.split('');
+        element.innerHTML = '';
         
-        // Find indices for highlightText
+        const lines = text.split('\n');
+        const textWithoutLines = text.replace(/\n/g, '');
         const highlightIndices = [];
+        
         if (highlightText) {
-            let startPos = text.indexOf(highlightText);
+            let startPos = textWithoutLines.indexOf(highlightText);
             if (startPos !== -1) {
                 for (let i = 0; i < highlightText.length; i++) {
                     highlightIndices.push(startPos + i);
                 }
             }
         }
-        
-        chars.forEach((char, index) => {
-            const span = document.createElement('span');
-            span.textContent = char;
-            span.classList.add('lupin-char');
-            if (highlightIndices.includes(index)) {
-                span.classList.add('highlight');
+
+        let totalCharIdx = 0;
+        lines.forEach((line, lIdx) => {
+            line.split('').forEach((char) => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.classList.add('lupin-char');
+                if (highlightIndices.includes(totalCharIdx)) {
+                    span.classList.add('highlight');
+                }
+                element.appendChild(span);
+                totalCharIdx++;
+            });
+            if (lIdx < lines.length - 1) {
+                const br = document.createElement('br');
+                br.classList.add('sp-br');
+                element.appendChild(br);
             }
-            element.appendChild(span);
         });
 
         const spans = element.querySelectorAll('.lupin-char');
         spans.forEach((span, index) => {
             setTimeout(() => {
                 span.classList.add('show');
-            }, 100 * index); // Staggered entry
+            }, 75 * index); 
         });
     };
 
@@ -99,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(heroTitle) {
         setTimeout(() => {
             heroTitle.style.opacity = "1";
-            const text = "次代へと繋ぐ、揺るぎない技術";
+            const text = "次代へと繋ぐ、\n揺るぎない技術";
             lupinAnimate(heroTitle, text, "技術");
         }, 4500); // Further delayed for slower logo reveal
     }
