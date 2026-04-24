@@ -440,6 +440,28 @@ header.scrolled .header-logo img {
   box-shadow: 0 10px 30px rgba(230, 57, 70, 0.3);
 }
 
+.instagram-icon-btn {
+  width: 64px;
+  height: 64px;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% !important;
+  /* Instagramブランドのグラデーション */
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 10px 20px rgba(214, 36, 159, 0.3);
+  transition: var(--transition-normal);
+}
+
+.instagram-icon-btn:hover {
+  transform: translateY(-5px) scale(1.08) !important;
+  box-shadow: 0 15px 30px rgba(214, 36, 159, 0.4) !important;
+}
+
+
 /* --- Lupin Animation (Typewriter style) --- */
 
 .lupin-text {
@@ -473,7 +495,6 @@ header.scrolled .header-logo img {
 }
 
 /* --- About & Profile --- */
-
 .about-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -505,6 +526,7 @@ header.scrolled .header-logo img {
   font-size: 0.9rem;
 }
 
+
 @media (max-width: 768px) {
   .profile-table th, .profile-table td {
     display: block;
@@ -529,6 +551,28 @@ header.scrolled .header-logo img {
 }
 
 /* --- Services / Business --- */
+#services {
+  position: relative;
+  background-image: url('Z.JPG');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  z-index: 1;
+  padding: 180px 5%; /* 上下の余白を広げて画像をより見せます */
+}
+
+
+#services::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5); /* 黒のオーバーレイで重厚感を出す */
+  z-index: -1;
+}
+
+#services .section-title {
+  color: #ffffff;
+}
 
 .services-grid {
   display: grid;
@@ -537,12 +581,13 @@ header.scrolled .header-logo img {
 }
 
 .service-card {
-  background: var(--color-bg);
+  background: rgba(255, 255, 255, 0.3); /* 透明度を大幅に上げて背景をより透かす */
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.03);
   transition: var(--transition-normal);
-  border: 1px solid #f0f0f0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px); /* ガラスのようなぼかし効果 */
 }
 
 .service-card:hover {
@@ -610,6 +655,29 @@ header.scrolled .header-logo img {
 }
 
 /* --- Contact & Map --- */
+#contact {
+  position: relative;
+  background-image: url('K.JPG');
+  background-size: cover;
+  background-position: center 30%; /* ヘルメットのロゴが見える位置に固定 */
+  background-attachment: scroll; /* 確実に表示させるためスクロール固定を解除 */
+  z-index: 1;
+  padding: 100px 5%; /* 表示領域を広げてロゴを見えやすくする */
+}
+
+#contact::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: -1;
+}
+
+#contact, #contact .section-title, #contact .info-item {
+  color: #ffffff;
+}
+
+
 
 .contact-layout {
   display: flex;
@@ -653,6 +721,7 @@ header.scrolled .header-logo img {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  margin-top: 150px; /* 余白を空けて背後のロゴを見せる */
 }
 
 .map-container iframe {

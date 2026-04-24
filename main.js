@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (entry.isIntersecting) {
                 // Check for lupin-text to animate typing
                 if (entry.target.classList.contains('lupin-trigger')) {
-                    const text = entry.target.dataset.text;
+                    const text = entry.target.dataset.text.replace(/\\n/g, '\n');
                     const highlight = entry.target.dataset.highlight || "";
                     lupinAnimate(entry.target, text, highlight);
                     animationObserver.unobserve(entry.target);
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(heroTitle) {
         setTimeout(() => {
             heroTitle.style.opacity = "1";
-            const text = "次代へと繋ぐ、\n揺るぎない技術";
+            const text = "次代へと繋ぐ！\n揺るぎない技術";
             lupinAnimate(heroTitle, text, "技術");
         }, 4500); // Further delayed for slower logo reveal
     }
