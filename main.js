@@ -24,12 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const highlightIndices = [];
         
         if (highlightText) {
-            let startPos = textWithoutLines.indexOf(highlightText);
-            if (startPos !== -1) {
-                for (let i = 0; i < highlightText.length; i++) {
-                    highlightIndices.push(startPos + i);
+            const highlightArray = Array.isArray(highlightText) ? highlightText : [highlightText];
+            highlightArray.forEach(term => {
+                let startPos = 0;
+                while ((startPos = textWithoutLines.indexOf(term, startPos)) !== -1) {
+                    for (let i = 0; i < term.length; i++) {
+                        highlightIndices.push(startPos + i);
+                    }
+                    startPos += term.length;
                 }
-            }
+            });
         }
 
         let totalCharIdx = 0;
@@ -109,8 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if(heroTitle) {
         setTimeout(() => {
             heroTitle.style.opacity = "1";
-            const text = "次代へと繋ぐ！\n揺るぎない技術";
-            lupinAnimate(heroTitle, text, "技術");
+            const text = "次代へと繋ぐ礎　ｰ\n　揺るぎない技術";
+            lupinAnimate(heroTitle, text, ["礎", "ｰ", "技術"]);
         }, 4500); // Further delayed for slower logo reveal
     }
 });
