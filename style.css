@@ -257,7 +257,7 @@ header.scrolled .header-logo img {
 
 @media (max-width: 768px) {
   .hero {
-    padding-top: 18vh; /* Balanced for mobile */
+    padding-top: 12vh; /* Reduced from 18vh to fit all content */
   }
 }
 
@@ -416,15 +416,70 @@ header.scrolled .header-logo img {
   opacity: 0;
   transform: translateY(10px);
   margin-top: 0.5rem;
+  margin-bottom: 0.5rem; /* Reduced to bring final logo closer */
   animation: fadeInUp 1s forwards 6s; /* Appear after title animation */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-brand-final {
+  font-family: 'Outfit', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.hero-brand-final.show {
+  opacity: 1;
+}
+
+.hero-brand-final span {
+  display: inline-block;
+  transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease;
+}
+
+.final-k { 
+  transform: translateX(-150px); 
+  opacity: 0; 
+  color: var(--color-accent);
+}
+.final-dash { 
+  transform: translateY(20px); 
+  opacity: 0; 
+  margin: 0 10px;
+  color: var(--color-accent);
+}
+.final-tec { 
+  transform: translateX(150px); 
+  opacity: 0; 
+  color: var(--color-accent);
+}
+
+.hero-brand-final.is-gathered .final-k,
+.hero-brand-final.is-gathered .final-tec,
+.hero-brand-final.is-gathered .final-dash {
+  transform: translate(0, 0);
+  opacity: 1;
 }
 
 @media (max-width: 768px) {
   .hero-brand-name {
-    font-size: 0.85rem;
-    letter-spacing: 0.15rem;
+    font-size: 0.5rem;
+    letter-spacing: 0.05rem;
     margin-top: 0.8rem;
+    margin-bottom: 0.3rem;
     white-space: nowrap;
+  }
+  .hero-brand-final {
+    font-size: 2.2rem; /* Slightly smaller on mobile */
+    margin-bottom: 1.2rem; /* Reduced margin */
   }
 }
 
@@ -448,7 +503,7 @@ header.scrolled .header-logo img {
 @media (max-width: 768px) {
   .hero-description {
     font-size: 0.85rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem; /* Reduced from 2rem */
     padding: 0 5%;
   }
 }

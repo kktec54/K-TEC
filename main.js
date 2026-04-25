@@ -113,8 +113,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if(heroTitle) {
         setTimeout(() => {
             heroTitle.style.opacity = "1";
-            const text = "次代へと繋ぐ礎　ｰ　揺るぎない技術";
-            lupinAnimate(heroTitle, text, ["礎", "ｰ", "技術"]);
+            const text = "次代へと繋ぐ礎　揺るぎない技術";
+            lupinAnimate(heroTitle, text, ["礎", "技術"]);
         }, 4500); // Further delayed for slower logo reveal
+    }
+
+    // --- Hero Brand Logo Gathering Animation ---
+    const brandFinal = document.querySelector('.hero-brand-final');
+    if (brandFinal) {
+        setTimeout(() => {
+            brandFinal.classList.add('show');
+            brandFinal.classList.add('is-gathered');
+        }, 8500); 
     }
 });
