@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(heroTitle) {
         setTimeout(() => {
             heroTitle.style.opacity = "1";
-            const text = "次代へと繋ぐ礎　ｰ\n　揺るぎない技術";
+            const text = "次代へと繋ぐ礎　ｰ　揺るぎない技術";
             lupinAnimate(heroTitle, text, ["礎", "ｰ", "技術"]);
         }, 4500); // Further delayed for slower logo reveal
     }
