@@ -127,38 +127,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 8500); 
     }
 
-    // --- 自社開発アプリのカード：CODE\10 を1文字ずつ打ち込み、くり返す（#16） ---
+    // --- 自社開発アプリのカード：DM の案内と CODE\10 を1文字ずつ打ち込み、くり返す（#16・#22） ---
     // 1文字ずつ5色からランダムに色を付け、打ち直すたびに色を変える（#18）
-    const code10 = document.querySelector('.code10-typed');
-    if (code10) {
-        const text = code10.textContent;
+    // DM の行を打ってから CODE\10 を打ち、少し見せてから両方消して打ち直す
+    const typedEls = Array.from(document.querySelectorAll('.app-teaser .code-typed'));
+    if (typedEls.length) {
         const COLORS = ['#0969da', '#1a7f37', '#8250df', '#bc4c00', '#bf3989']; // 青・緑・紫・橙・桃
-        let colors = [];
+        const lines = typedEls.map((el) => ({
+            el,
+            cursor: el.parentElement.querySelector('.code-cursor'),
+            text: el.textContent,
+            colors: [],
+        }));
         const pickColors = () => {
-            colors = Array.from(text, () => COLORS[Math.floor(Math.random() * COLORS.length)]);
+            lines.forEach((line) => {
+                line.colors = Array.from(line.text, () => COLORS[Math.floor(Math.random() * COLORS.length)]);
+            });
         };
-        const render = (count) => {
-            code10.innerHTML = '';
+        const render = (line, count) => {
+            line.el.innerHTML = '';
             for (let i = 0; i < count; i++) {
                 const span = document.createElement('span');
-                span.style.color = colors[i];
-                span.textContent = text[i];
-                code10.appendChild(span);
+                span.style.color = line.colors[i];
+                span.textContent = line.text[i];
+                line.el.appendChild(span);
             }
         };
+        const setCursor = (index) => {
+            lines.forEach((line, i) => line.cursor.classList.toggle('is-active', i === index));
+        };
+        let current = 0;
         let typed = 0;
+        const restart = () => {
+            pickColors();
+            lines.forEach((line) => render(line, 0));
+            current = 0;
+            typed = 0;
+            setCursor(0);
+        };
         const tick = () => {
-            if (typed < text.length) {
+            const line = lines[current];
+            if (typed < line.text.length) {
                 typed++;
-                render(typed);
-                setTimeout(tick, 120 + Math.random() * 140);
+                render(line, typed);
+                setTimeout(tick, 70 + Math.random() * 110);
+            } else if (current < lines.length - 1) {
+                // 次の行へ移る
+                current++;
+                typed = 0;
+                setCursor(current);
+                setTimeout(tick, 500);
             } else {
                 // 打ち終わったら少し見せて、消してから色を変えて打ち直す
-                setTimeout(() => { typed = 0; pickColors(); render(0); setTimeout(tick, 700); }, 4000);
+                setTimeout(() => { restart(); setTimeout(tick, 700); }, 4000);
             }
         };
-        pickColors();
-        render(0);
+        restart();
         setTimeout(tick, 600);
     }
 });

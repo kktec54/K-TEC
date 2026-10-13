@@ -1120,39 +1120,43 @@ footer a:hover {
   margin-top: 0;
 }
 
-/* インスタの DM への案内（#20）。コードのコメント風の緑で、押すと Instagram が開く */
+/* インスタの DM への案内と CODE\10（#16・#20・#22）。どちらも main.js が1文字ずつ打ち込み、色をランダムに付ける */
+.app-teaser .code-dm,
+.app-teaser .code10-sign {
+  font-family: Consolas, Menlo, "Courier New", monospace;
+  font-weight: 700;
+  color: #57606a;
+  text-shadow: 0 0 6px #ffffff, 0 0 12px #ffffff;
+}
+
+/* 打ち込み中に行の高さが変わって下が動かないよう、高さを保つ */
 .app-teaser .code-dm {
   margin-top: 12px;
-  font-family: Consolas, Menlo, "Courier New", monospace;
   font-size: 0.95rem;
   line-height: 1.6;
-  color: #1a7f37;
-  text-shadow: 0 0 6px #ffffff, 0 0 12px #ffffff;
+  min-height: 1.6em;
+  opacity: 0.8;
 }
 
 .app-teaser .code-dm a {
   color: inherit;
   text-decoration: none;
-  border-bottom: 1px dashed rgba(26, 127, 55, 0.5);
 }
 
-.app-teaser .code-dm a:hover {
-  border-bottom-style: solid;
+.app-teaser .code-dm a:hover .code-typed {
+  text-decoration: underline;
 }
 
 .app-teaser .code10-sign {
   margin-top: 16px;
-  font-family: Consolas, Menlo, "Courier New", monospace;
   font-size: 1.4rem;
-  font-weight: 700;
   line-height: 1.4;
+  min-height: 1.4em;
   letter-spacing: 0.04em;
-  color: #57606a;
   opacity: 0.6;
-  text-shadow: 0 0 6px #ffffff, 0 0 12px #ffffff;
 }
 
-.app-teaser .code10-sign .code10-sr {
+.app-teaser .code-sr {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -1163,14 +1167,19 @@ footer a:hover {
 
 .app-teaser .code10-sign .code10-prompt { color: #8c959f; }
 
-.app-teaser .code10-sign .code10-cursor {
-  display: inline-block;
+/* カーソルは、いま打っている行にだけ出す（main.js が is-active を付ける） */
+.app-teaser .code-cursor {
+  display: none;
   width: 0.55em;
   height: 1.05em;
   margin-left: 2px;
   vertical-align: -0.15em;
   background: #57606a;
   animation: code10Blink 1.06s steps(1) infinite;
+}
+
+.app-teaser .code-cursor.is-active {
+  display: inline-block;
 }
 
 @keyframes code10Blink {
