@@ -1086,7 +1086,33 @@ footer a:hover {
   box-shadow: 0 8px 25px rgba(230, 57, 70, 0.4);
 }
 
+/* ホームページ作成の募集（#8） */
+/* ボタンで移ったとき、入力欄の上が固定ヘッダー（80px）に隠れないようにする */
+#contact-form {
+  scroll-margin-top: 100px;
+}
+
+.app-teaser .hp-recruit {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid #eeeeee;
+}
+
+.app-teaser .app-btn--outline {
+  background: #ffffff;
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
+  padding: 14px 40px;
+  box-shadow: none;
+}
+
+.app-teaser .app-btn--outline:hover {
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
 @media (max-width: 768px) {
+  .app-teaser .app-btn--outline { padding: 14px 28px; }
   .app-teaser {
     padding: 30px 20px;
   }
