@@ -126,4 +126,37 @@ document.addEventListener('DOMContentLoaded', () => {
             brandFinal.classList.add('is-gathered');
         }, 8500); 
     }
+
+    // --- 自社開発アプリのカード：CODE\10 を1文字ずつ打ち込み、くり返す（#16） ---
+    // HTML には打ち終わった形を入れてあり、ここで空にしてから打ち直す
+    const code10 = document.querySelector('.code10-typed');
+    if (code10) {
+        const parts = Array.from(code10.children).map((el) => ({ cls: el.className, text: el.textContent }));
+        const total = parts.reduce((n, part) => n + part.text.length, 0);
+        const render = (count) => {
+            let left = count;
+            code10.innerHTML = '';
+            parts.forEach((part) => {
+                if (left <= 0) return;
+                const span = document.createElement('span');
+                span.className = part.cls;
+                span.textContent = part.text.slice(0, left);
+                left -= part.text.length;
+                code10.appendChild(span);
+            });
+        };
+        let typed = 0;
+        const tick = () => {
+            if (typed < total) {
+                typed++;
+                render(typed);
+                setTimeout(tick, 120 + Math.random() * 140);
+            } else {
+                // 打ち終わったら少し見せて、消してから打ち直す
+                setTimeout(() => { typed = 0; render(0); setTimeout(tick, 700); }, 4000);
+            }
+        };
+        render(0);
+        setTimeout(tick, 600);
+    }
 });

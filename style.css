@@ -1110,9 +1110,53 @@ footer a:hover {
 }
 
 .app-teaser .hp-recruit {
-  margin-top: 32px;
-  padding-top: 28px;
+  margin-top: 28px;
+  padding-top: 18px;
   border-top: 1px solid #eeeeee;
+}
+
+/* CODE\10 をコード風に（#16）。色はコードの色分け風：単語＝青、\＝桃、数字＝橙 */
+.app-teaser .hp-recruit .text-balance {
+  margin-top: 0;
+}
+
+.app-teaser .code10-sign {
+  margin-top: 16px;
+  font-family: Consolas, Menlo, "Courier New", monospace;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  color: #57606a;
+  text-shadow: 0 0 6px #ffffff, 0 0 12px #ffffff;
+}
+
+.app-teaser .code10-sign .code10-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.app-teaser .code10-sign .code10-prompt { color: #8c959f; }
+.app-teaser .code10-sign .c-word { color: #0969da; }
+.app-teaser .code10-sign .c-esc { color: #bf3989; }
+.app-teaser .code10-sign .c-num { color: #bc4c00; }
+
+.app-teaser .code10-sign .code10-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: #57606a;
+  animation: code10Blink 1.06s steps(1) infinite;
+}
+
+@keyframes code10Blink {
+  50% { opacity: 0; }
 }
 
 @media (max-width: 768px) {
