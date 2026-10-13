@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="株式会社K-TECが開発中の、現場と事務の仕事を助けるアプリ4本の操作デモ動画。">
+  <title>開発中アプリ | 株式会社K-TEC</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f7fa;
+      --text: #1d2330;
+      --text-sub: #5b6475;
+      --line: #e3e7ee;
+      --accent: #e63946;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+      line-height: 1.8;
+    }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+
+    /* 上の帯：トップへ戻る */
+    .topbar { border-bottom: 1px solid var(--line); }
+    .topbar .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .topbar a { color: var(--text); text-decoration: none; font-weight: 700; }
+    .topbar .back { font-size: 14px; font-weight: 400; color: var(--text-sub); }
+    .topbar a:hover { color: var(--accent); }
+
+    /* 見出し */
+    .hero { padding: 72px 0 40px; text-align: center; }
+    .hero-label {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .18em;
+    }
+    .hero h1 { margin: 0 0 16px; font-size: clamp(26px, 5vw, 38px); line-height: 1.4; }
+    .hero p { margin: 0 auto; max-width: 620px; color: var(--text-sub); }
+
+    /* 目次 */
+    .toc {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+      margin: 28px 0 0; padding: 0; list-style: none;
+    }
+    .toc a {
+      display: inline-block; padding: 6px 16px;
+      border: 1px solid var(--line); border-radius: 999px;
+      color: var(--text); text-decoration: none; font-size: 14px;
+      background: var(--bg);
+    }
+    .toc a:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* アプリ1本ずつ */
+    .app {
+      display: grid; grid-template-columns: 1fr; gap: 20px;
+      padding: 48px 0; border-top: 1px solid var(--line);
+      scroll-margin-top: 16px;
+    }
+    .app-num { margin: 0; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .14em; }
+    .app h2 { margin: 4px 0 8px; font-size: clamp(22px, 4vw, 28px); line-height: 1.4; }
+    .app-desc { margin: 0; color: var(--text-sub); }
+    .app-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; padding: 0; list-style: none; }
+    .app-tags li {
+      padding: 2px 10px; border-radius: 6px;
+      background: var(--bg-soft); color: var(--text-sub); font-size: 13px;
+    }
+
+    .media {
+      margin: 0; padding: 10px;
+      background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius);
+    }
+    .media video {
+      display: block; width: 100%; height: auto;
+      border-radius: 8px; background: #000;
+    }
+    /* SiteLens はスマホの縦長の画面 */
+    .media--phone { max-width: 300px; margin: 0 auto; padding: 10px; border-radius: 28px; }
+    .media--phone video { border-radius: 20px; }
+
+    .note { margin: 0; padding: 32px 0 64px; border-top: 1px solid var(--line); color: var(--text-sub); font-size: 13px; }
+
+    @media (min-width: 820px) {
+      .app { grid-template-columns: 1fr 1.7fr; gap: 40px; align-items: center; }
+      .app--phone { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <a href="index.html">株式会社K-TEC</a>
+      <a class="back" href="index.html#hp-app">← トップへ戻る</a>
+    </div>
+  </header>
+  <main class="wrap">
+    <header class="hero">
+      <p class="hero-label">APP DEMO</p>
+      <h1>開発中アプリ</h1>
+      <p>現場と事務の仕事を助けるアプリを4つ紹介します。実際の操作の様子を動画でご覧ください。</p>
+      <ul class="toc">
+        <li><a href="#timelog">TimeLog</a></li>
+        <li><a href="#pay">PAY</a></li>
+        <li><a href="#curve-layout">曲線割付</a></li>
+        <li><a href="#sitelens">SiteLens</a></li>
+      </ul>
+    </header>
+
+    <article class="app" id="timelog">
+      <div>
+        <p class="app-num">01 / 勤怠管理</p>
+        <h2>TimeLog</h2>
+        <p class="app-desc">現場の出退勤をスマホで記録。管理者はブラウザで現場ごとの人数と勤怠を確認し、出面集計表を Excel で出力。</p>
+        <ul class="app-tags"><li>スマホ</li><li>ブラウザ</li><li>Excel 出力</li></ul>
+      </div>
+      <figure class="media">
+        <video controls autoplay muted loop playsinline poster="assets/apps/timelog.jpg" aria-label="TimeLog の操作デモ動画">
+          <source src="assets/apps/timelog.mp4" type="video/mp4">
+        </video>
+      </figure>
+    </article>
+
+    <article class="app" id="pay">
+      <div>
+        <p class="app-num">02 / 支払い管理</p>
+        <h2>PAY</h2>
+        <p class="app-desc">届いた請求書を現場ごとに配分。現場別の支払いがひと目で分かり、支払予定は Excel で出力。</p>
+        <ul class="app-tags"><li>ブラウザ</li><li>Excel 出力</li></ul>
+      </div>
+      <figure class="media">
+        <video controls autoplay muted loop playsinline poster="assets/apps/pay.jpg" aria-label="PAY の操作デモ動画">
+          <source src="assets/apps/pay.mp4" type="video/mp4">
+        </video>
+      </figure>
+    </article>
+
+    <article class="app" id="curve-layout">
+      <div>
+        <p class="app-num">03 / 曲線の割付計算</p>
+        <h2>曲線割付</h2>
+        <p class="app-desc">道路の曲線部に並べる側溝などの割付を自動計算。平面図・図面から Excel・SIMA・DXF まで一度に。</p>
+        <ul class="app-tags"><li>ブラウザ</li><li>Excel</li><li>SIMA</li><li>DXF</li></ul>
+      </div>
+      <figure class="media">
+        <video controls autoplay muted loop playsinline poster="assets/apps/r.jpg" aria-label="曲線割付の操作デモ動画">
+          <source src="assets/apps/r.mp4" type="video/mp4">
+        </video>
+      </figure>
+    </article>
+
+    <article class="app app--phone" id="sitelens">
+      <div>
+        <p class="app-num">04 / 現場の測量</p>
+        <h2>SiteLens</h2>
+        <p class="app-desc">スマホひとつで現場の測量。現場ごとの座標や観測の記録を、その場で確認。</p>
+        <ul class="app-tags"><li>Android</li><li>AR</li></ul>
+      </div>
+      <figure class="media media--phone">
+        <video controls autoplay muted loop playsinline poster="assets/apps/sitelens.jpg" aria-label="SiteLens の操作デモ動画">
+          <source src="assets/apps/sitelens.mp4" type="video/mp4">
+        </video>
+      </figure>
+    </article>
+
+    <p class="note">※ 動画に出てくる人名・現場名・会社名は、すべて架空のデモデータです。SiteLens の AR の場面は、画面のイメージです。</p>
+  </main>
+</body>
+</html>
