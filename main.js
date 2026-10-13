@@ -127,11 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 8500); 
     }
 
-    // --- 自社開発アプリの枠：カードの中を流れるコード（#10） ---
-    // 暗い下地に、意味のないコードを下から上へゆっくり流す。ランダムな1〜2文字を5色で色分けする。
-    const codeCanvas = document.querySelector('.app-code-bg');
-    if (codeCanvas) {
-        const ctx = codeCanvas.getContext('2d');
+    // --- 自社開発アプリの枠：カードの中を流れるコード（#10・#12） ---
+    // 意味のないコードを下から上へ流す。ランダムな1〜2文字を5色で色分けする。
+    // 文字は最初に1回だけ作り、同じ中身を2回並べて CSS の transform で半分まで動かし、くり返す。
+    const codeFlow = document.querySelector('.app-code-flow');
+    if (codeFlow) {
         const SNIPPETS = [
             'const app = createApp({ site: "K-TEC" });',
             'function build(idea) { return deploy(idea); }',
@@ -151,17 +151,12 @@ document.addEventListener('DOMContentLoaded', () => {
             'def estimate(work): return work * rate',
         ];
         const COLORS = ['#58a6ff', '#7ee787', '#d2a8ff', '#ffa657', '#ff7b9c'];
-        const BASE = 'rgba(201, 209, 217, 0.26)';
-        const FONT_SIZE = 12;
-        const LINE_H = 18;
-        let lines = [];
-        let offset = 0;
-        let width = 0;
-        let height = 0;
+        const LINES = 40;          // カードの高さより多めに作る
+        const SPEED = 30;          // 1秒に何px 上へ流すか
 
+        const escape = (ch) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[ch] || ch);
         const makeLine = () => {
             const text = SNIPPETS[Math.floor(Math.random() * SNIPPETS.length)];
-            const indent = Math.floor(Math.random() * 4) * 2;
             // 1行に2〜4か所、1〜2文字だけ色を付ける
             const marks = {};
             const count = 2 + Math.floor(Math.random() * 3);
@@ -171,75 +166,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const color = COLORS[Math.floor(Math.random() * COLORS.length)];
                 for (let j = 0; j < len; j++) marks[at + j] = color;
             }
-            return { text: ' '.repeat(indent) + text, indent, marks };
-        };
-
-        const resize = () => {
-            const dpr = window.devicePixelRatio || 1;
-            width = codeCanvas.clientWidth;
-            height = codeCanvas.clientHeight;
-            codeCanvas.width = width * dpr;
-            codeCanvas.height = height * dpr;
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            ctx.font = FONT_SIZE + 'px Consolas, Menlo, monospace';
-            ctx.textBaseline = 'top';
-            const need = Math.ceil(height / LINE_H) + 2;
-            while (lines.length < need) lines.push(makeLine());
-            lines.length = need;
-        };
-
-        const draw = () => {
-            ctx.clearRect(0, 0, width, height);
-            ctx.globalAlpha = 1;
-            const charW = ctx.measureText('M').width;
-            lines.forEach((line, i) => {
-                const y = i * LINE_H - offset;
-                for (let c = 0; c < line.text.length; c++) {
-                    const ch = line.text[c];
-                    if (ch === ' ') continue;
-                    const x = 14 + c * charW;
-                    if (x > width) break;
-                    const mark = line.marks[c - line.indent];
-                    ctx.globalAlpha = mark ? 0.7 : 1;
-                    ctx.fillStyle = mark || BASE;
-                    ctx.fillText(ch, x, y);
-                }
-            });
-        };
-
-        let running = false;
-        let last = 0;
-        const step = (now) => {
-            if (!running) return;
-            const dt = last ? Math.min(now - last, 100) : 16;
-            last = now;
-            offset += dt * 0.02; // 1秒に約20px 上へ
-            while (offset >= LINE_H) {
-                offset -= LINE_H;
-                lines.shift();
-                lines.push(makeLine());
+            let html = ' '.repeat(Math.floor(Math.random() * 4) * 2);
+            for (let c = 0; c < text.length; c++) {
+                const ch = escape(text[c]);
+                html += marks[c] && text[c] !== ' ' ? `<span style="color:${marks[c]}">${ch}</span>` : ch;
             }
-            draw();
-            requestAnimationFrame(step);
+            return html;
         };
 
-        resize();
-        draw();
-        window.addEventListener('resize', () => { resize(); draw(); });
-
-        // 動きを減らす設定では止めたまま見せる。画面に見えている間だけ流す
-        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!reduce && 'IntersectionObserver' in window) {
-            new IntersectionObserver((entries) => {
-                const visible = entries[0].isIntersecting;
-                if (visible && !running) {
-                    running = true;
-                    last = 0;
-                    requestAnimationFrame(step);
-                } else if (!visible) {
-                    running = false;
-                }
-            }).observe(codeCanvas);
-        }
+        const block = Array.from({ length: LINES }, makeLine).join('\n') + '\n';
+        codeFlow.innerHTML = block + block;
+        // 中身の半分（1ブロック分）を SPEED で流す時間
+        codeFlow.style.setProperty('--flow-duration', (codeFlow.offsetHeight / 2 / SPEED) + 's');
     }
 });
