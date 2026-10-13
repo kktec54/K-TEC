@@ -1115,7 +1115,7 @@ footer a:hover {
   border-top: 1px solid #eeeeee;
 }
 
-/* CODE\10 をコード風に（#16）。色はコードの色分け風：単語＝青、\＝桃、数字＝橙 */
+/* CODE\10 をコード風に（#16）。1文字ずつの色は main.js がランダムに付ける（#18）。全体を少し薄く */
 .app-teaser .hp-recruit .text-balance {
   margin-top: 0;
 }
@@ -1128,6 +1128,7 @@ footer a:hover {
   line-height: 1.4;
   letter-spacing: 0.04em;
   color: #57606a;
+  opacity: 0.6;
   text-shadow: 0 0 6px #ffffff, 0 0 12px #ffffff;
 }
 
@@ -1141,9 +1142,6 @@ footer a:hover {
 }
 
 .app-teaser .code10-sign .code10-prompt { color: #8c959f; }
-.app-teaser .code10-sign .c-word { color: #0969da; }
-.app-teaser .code10-sign .c-esc { color: #bf3989; }
-.app-teaser .code10-sign .c-num { color: #bc4c00; }
 
 .app-teaser .code10-sign .code10-cursor {
   display: inline-block;
