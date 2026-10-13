@@ -128,34 +128,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 自社開発アプリのカード：CODE\10 を1文字ずつ打ち込み、くり返す（#16） ---
-    // HTML には打ち終わった形を入れてあり、ここで空にしてから打ち直す
+    // 1文字ずつ5色からランダムに色を付け、打ち直すたびに色を変える（#18）
     const code10 = document.querySelector('.code10-typed');
     if (code10) {
-        const parts = Array.from(code10.children).map((el) => ({ cls: el.className, text: el.textContent }));
-        const total = parts.reduce((n, part) => n + part.text.length, 0);
+        const text = code10.textContent;
+        const COLORS = ['#0969da', '#1a7f37', '#8250df', '#bc4c00', '#bf3989']; // 青・緑・紫・橙・桃
+        let colors = [];
+        const pickColors = () => {
+            colors = Array.from(text, () => COLORS[Math.floor(Math.random() * COLORS.length)]);
+        };
         const render = (count) => {
-            let left = count;
             code10.innerHTML = '';
-            parts.forEach((part) => {
-                if (left <= 0) return;
+            for (let i = 0; i < count; i++) {
                 const span = document.createElement('span');
-                span.className = part.cls;
-                span.textContent = part.text.slice(0, left);
-                left -= part.text.length;
+                span.style.color = colors[i];
+                span.textContent = text[i];
                 code10.appendChild(span);
-            });
+            }
         };
         let typed = 0;
         const tick = () => {
-            if (typed < total) {
+            if (typed < text.length) {
                 typed++;
                 render(typed);
                 setTimeout(tick, 120 + Math.random() * 140);
             } else {
-                // 打ち終わったら少し見せて、消してから打ち直す
-                setTimeout(() => { typed = 0; render(0); setTimeout(tick, 700); }, 4000);
+                // 打ち終わったら少し見せて、消してから色を変えて打ち直す
+                setTimeout(() => { typed = 0; pickColors(); render(0); setTimeout(tick, 700); }, 4000);
             }
         };
+        pickColors();
         render(0);
         setTimeout(tick, 600);
     }
