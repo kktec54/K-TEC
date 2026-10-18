@@ -726,9 +726,10 @@ header.scrolled .header-logo img {
   }
 }
 
-/* 現場の動画（#36） */
+/* 現場の動画（#36）。説明の文は動画の下側に重ね、下から黒く暗くして読みやすくする */
 .recruit-video {
-  margin: 0 auto 2.5rem;
+  position: relative;
+  margin: 0 auto;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
@@ -739,6 +740,42 @@ header.scrolled .header-logo img {
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.recruitment .recruit-video-text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-width: none;
+  margin: 0;
+  padding: 70px 32px 26px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0) 100%);
+  font-size: 1rem;
+  line-height: 1.8;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* スマホは横長だと文字が収まらないので、正方形に近づけてショベルのいる右寄りを見せる */
+@media (max-width: 768px) {
+  .recruit-video video {
+    aspect-ratio: 1 / 1;
+    object-position: 65% center;
+  }
+
+  /* 狭い幅では改行の指定を外し、言葉の切れ目で自然に折り返す */
+  .recruitment .recruit-video-text {
+    padding: 60px 18px 18px;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    text-wrap: pretty;
+    word-break: auto-phrase;
+  }
+
+  .recruit-video-text br {
+    display: none;
+  }
 }
 
 /* --- Contact & Map --- */
