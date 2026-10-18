@@ -804,11 +804,61 @@ button.info-item:focus-visible .info-icon {
   transform: scale(1.08);
 }
 
-/* 「押して表示」の代わりに指さしの絵を出す（#28） */
+/* 「押して表示」の代わりに、ほかのアイコンとそろえた線の指さしを出す（#28・#30）。
+   ときどき軽く押す動きをし、指先から赤い輪が広がる */
 .info-hint {
-  display: inline-block;
-  font-size: 1.3rem;
-  line-height: 1.2;
+  position: relative;
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.info-hint svg {
+  width: 100%;
+  height: 100%;
+  animation: hintTap 2.4s ease-in-out infinite;
+}
+
+.info-hint::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 3px;
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--color-accent);
+  border-radius: 50%;
+  opacity: 0;
+  animation: hintRipple 2.4s ease-out infinite;
+}
+
+/* 3つが同時に動かないよう、少しずつずらす */
+button.info-item:nth-child(2) .info-hint svg,
+button.info-item:nth-child(2) .info-hint::before { animation-delay: 0.3s; }
+button.info-item:nth-child(3) .info-hint svg,
+button.info-item:nth-child(3) .info-hint::before { animation-delay: 0.6s; }
+
+button.info-item:hover .info-hint {
+  color: #ffffff;
+}
+
+@keyframes hintTap {
+  0%, 60%, 100% { transform: translateY(0) scale(1); }
+  70%           { transform: translateY(2px) scale(0.92); }
+  80%           { transform: translateY(0) scale(1); }
+}
+
+@keyframes hintRipple {
+  0%, 68% { opacity: 0; transform: scale(0.4); }
+  72%     { opacity: 1; transform: scale(0.8); }
+  100%    { opacity: 0; transform: scale(2.4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .info-hint svg,
+  .info-hint::before { animation: none; }
 }
 
 .info-icon {
