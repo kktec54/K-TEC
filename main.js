@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 求人の欄の動画（#36） ---
     // 画面に映っている間だけ再生する（スマホの通信量と電池の減りを抑える）。
-    // 動画の上の説明の文は、初めて映ったときに1文字ずつ打ち込む
+    // 動画の上の説明の文は、初めて映ったときから1文字ずつ打ち込み、くり返す
     const recruitVideo = document.querySelector('.recruit-video video');
     const recruitText = document.querySelector('.recruit-video-text');
     let startTyping = () => {};
@@ -224,9 +224,19 @@ document.addEventListener('DOMContentLoaded', () => {
             let current = null;
             const tick = () => {
                 const part = parts[partIndex];
-                if (!part) return;
+                if (!part) {
+                    // 打ち終わったら少し見せて、消してから打ち直す（くり返す）
+                    setTimeout(() => {
+                        typed.replaceChildren(cursor);
+                        partIndex = 0;
+                        charIndex = 0;
+                        current = null;
+                        setTimeout(tick, 700);
+                    }, 4000);
+                    return;
+                }
                 if (part.br) {
-                    typed.insertBefore(part.br, cursor);
+                    typed.insertBefore(part.br.cloneNode(), cursor);
                     partIndex++;
                     setTimeout(tick, 350);
                     return;
