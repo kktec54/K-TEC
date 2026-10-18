@@ -186,6 +186,91 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(tick, 600);
     }
 
+    // --- 求人の欄の動画（#36） ---
+    // 画面に映っている間だけ再生する（スマホの通信量と電池の減りを抑える）。
+    // 動画の上の説明の文は、初めて映ったときから1文字ずつ打ち込み、くり返す
+    const recruitVideo = document.querySelector('.recruit-video video');
+    const recruitText = document.querySelector('.recruit-video-text');
+    let startTyping = () => {};
+    if (recruitText) {
+        // 改行（<br>）の位置を保ったまま、文字と改行の並びに分ける
+        const parts = Array.from(recruitText.childNodes).map(node =>
+            node.nodeType === Node.TEXT_NODE ? { text: node.textContent } : { br: node.cloneNode() });
+        // 読み上げソフトには最初から全文を読ませ、打ち込み表示は隠す
+        const fullText = document.createElement('span');
+        fullText.className = 'visually-hidden';
+        fullText.textContent = recruitText.textContent;
+        // 全文ぶんの場所を見えない文で先に取っておき、打つ文はその上に重ねる（打つたびに文がずれないように）
+        const box = document.createElement('span');
+        box.className = 'type-box';
+        box.setAttribute('aria-hidden', 'true');
+        const spacer = document.createElement('span');
+        spacer.className = 'type-spacer';
+        spacer.replaceChildren(...parts.map(part => part.br ? part.br.cloneNode() : document.createTextNode(part.text)));
+        const typed = document.createElement('span');
+        typed.className = 'type-text';
+        const cursor = document.createElement('span');
+        cursor.className = 'type-cursor';
+        typed.appendChild(cursor);
+        box.append(spacer, typed);
+        recruitText.replaceChildren(fullText, box);
+
+        let started = false;
+        startTyping = () => {
+            if (started) return;
+            started = true;
+            let partIndex = 0;
+            let charIndex = 0;
+            let current = null;
+            const tick = () => {
+                const part = parts[partIndex];
+                if (!part) {
+                    // 打ち終わったら少し見せて、消してから打ち直す（くり返す）
+                    setTimeout(() => {
+                        typed.replaceChildren(cursor);
+                        partIndex = 0;
+                        charIndex = 0;
+                        current = null;
+                        setTimeout(tick, 700);
+                    }, 4000);
+                    return;
+                }
+                if (part.br) {
+                    typed.insertBefore(part.br.cloneNode(), cursor);
+                    partIndex++;
+                    setTimeout(tick, 350);
+                    return;
+                }
+                if (!current) {
+                    current = document.createTextNode('');
+                    typed.insertBefore(current, cursor);
+                }
+                current.textContent += part.text[charIndex++];
+                if (charIndex >= part.text.length) {
+                    partIndex++;
+                    charIndex = 0;
+                    current = null;
+                }
+                setTimeout(tick, 45 + Math.random() * 70);
+            };
+            setTimeout(tick, 600);
+        };
+    }
+    if (recruitVideo && 'IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    recruitVideo.play().catch(() => {});
+                    startTyping();
+                } else {
+                    recruitVideo.pause();
+                }
+            });
+        }, { threshold: 0.25 }).observe(recruitVideo);
+    } else {
+        startTyping();
+    }
+
     // --- モーダルの共通処理（#24・#26） ---
     // ×ボタン・背景のクリック・Esc キーで閉じる。開いている間は後ろの画面を動かさない
     const setupModal = (modal) => {
