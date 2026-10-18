@@ -949,6 +949,71 @@ footer a:hover {
   }
 }
 
+/* お問い合わせフォームのモーダル（#24） */
+.contact-form-open {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.contact-modal {
+  /* 全体の余白リセットで中央寄せが消えるので、ここで戻す */
+  margin: auto;
+  width: min(800px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: none;
+  border-radius: 15px;
+  background: transparent;
+  overflow-y: auto;
+}
+
+@media (max-width: 600px) {
+  /* スマホ幅で「く」だけ次の行に落ちないよう、左右の余白を詰める */
+  .contact-form-open .submit-btn {
+    padding: 18px 32px;
+  }
+}
+
+.contact-modal::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.contact-modal[open] {
+  animation: fadeInUp 0.3s ease;
+}
+
+.contact-modal .contact-form-container {
+  position: relative;
+  margin: 0;
+}
+
+.contact-modal-title {
+  margin: 0 40px 25px 0;
+  font-size: 1.3rem;
+  color: var(--color-primary);
+}
+
+.contact-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.contact-modal-close:hover {
+  background: var(--color-bg-alt);
+  color: var(--color-primary);
+}
+
 /* Mobile Adjustments */
 @media (max-width: 600px) {
   .section-title { font-size: 2rem; }
@@ -1104,10 +1169,6 @@ footer a:hover {
 }
 
 /* ホームページ作成の募集（#8） */
-/* リンクで移ったとき、入力欄の上が固定ヘッダー（80px）に隠れないようにする */
-#contact-form {
-  scroll-margin-top: 100px;
-}
 
 .app-teaser .hp-recruit {
   margin-top: 28px;
