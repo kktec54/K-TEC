@@ -214,40 +214,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 連絡先のモーダル（#26） ---
+    // --- 連絡先のアコーディオン（#26・#32） ---
     // 迷惑電話・迷惑メール対策。電話番号とメールはページの文字として置かず、
-    // 押されたときに部品から組み立てる（文字を自動で集めるロボットに拾われにくくする）
-    const infoModal = document.getElementById('contact-info-modal');
-    if (infoModal && typeof infoModal.showModal === 'function') {
-        setupModal(infoModal);
-        const infoTitle = infoModal.querySelector('.contact-modal-title');
-        const infoValue = infoModal.querySelector('.contact-info-value');
-        const infoData = {
-            address: () => ({ title: '所在地', text: '京都市山科区勧修寺西金ケ崎256-1' }),
-            phone: () => {
-                const tel = ['8894', '9549', '090'].reverse().join('-');
-                return { title: '電話番号 (代表)', text: tel, href: 'tel:' + tel.replace(/-/g, '') };
-            },
-            email: () => {
-                const mail = ['k-tec', ['circus', 'ocn', 'ne', 'jp'].join('.')].join(String.fromCharCode(64));
-                return { title: 'メールアドレス', text: mail, href: 'mailto:' + mail };
-            },
-        };
-        document.querySelectorAll('[data-info]').forEach(opener => {
-            opener.addEventListener('click', () => {
+    // 開かれたときに部品から組み立てる（文字を自動で集めるロボットに拾われにくくする）
+    const infoData = {
+        address: () => ({ text: '京都市山科区勧修寺西金ケ崎256-1' }),
+        phone: () => {
+            const tel = ['8894', '9549', '090'].reverse().join('-');
+            return { text: tel, href: 'tel:' + tel.replace(/-/g, '') };
+        },
+        email: () => {
+            const mail = ['k-tec', ['circus', 'ocn', 'ne', 'jp'].join('.')].join(String.fromCharCode(64));
+            return { text: mail, href: 'mailto:' + mail };
+        },
+    };
+    document.querySelectorAll('.info-acc').forEach(acc => {
+        const opener = acc.querySelector('[data-info]');
+        const value = acc.querySelector('.info-value');
+        opener.addEventListener('click', () => {
+            if (!value.hasChildNodes()) {
                 const info = infoData[opener.dataset.info]();
-                infoTitle.textContent = info.title;
-                infoValue.textContent = '';
                 if (info.href) {
                     const link = document.createElement('a');
                     link.href = info.href;
                     link.textContent = info.text;
-                    infoValue.appendChild(link);
+                    value.appendChild(link);
                 } else {
-                    infoValue.textContent = info.text;
+                    value.textContent = info.text;
                 }
-                openModal(infoModal);
-            });
+            }
+            const isOpen = acc.classList.toggle('is-open');
+            opener.setAttribute('aria-expanded', String(isOpen));
         });
-    }
+    });
 });
