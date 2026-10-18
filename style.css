@@ -730,17 +730,59 @@ header.scrolled .header-logo img {
 .recruit-video {
   position: relative;
   margin: 0 auto;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
 
+/* 動画のふちを、欄の黒へ溶け込むようにぼかす（上下左右を透明へ） */
 .recruit-video video {
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0%, #000 12%, #000 88%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* 見えない全文で場所を取り、打つ文をその上にぴったり重ねる */
+.recruit-video-text .type-box {
+  position: relative;
+  display: block;
+}
+
+.recruit-video-text .type-spacer {
+  visibility: hidden;
+}
+
+.recruit-video-text .type-text {
+  position: absolute;
+  inset: 0;
+}
+
+/* 打ち込み中のカーソル（白い四角の点滅） */
+.recruit-video-text .type-cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: #ffffff;
+  animation: code10Blink 1.06s steps(1) infinite;
+}
+
+/* 画面には出さず、読み上げソフトにだけ読ませる */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .recruitment .recruit-video-text {
@@ -750,8 +792,8 @@ header.scrolled .header-logo img {
   bottom: 0;
   max-width: none;
   margin: 0;
-  padding: 70px 32px 26px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0) 100%);
+  padding: 70px 12% 30px;
+  background: linear-gradient(to top, rgba(26, 26, 26, 0.9) 0%, rgba(26, 26, 26, 0.6) 55%, rgba(26, 26, 26, 0) 100%);
   font-size: 1rem;
   line-height: 1.8;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
