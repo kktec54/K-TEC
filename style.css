@@ -831,6 +831,22 @@ button.info-item:hover .info-chevron {
   opacity: 1;
 }
 
+/* 閉じている間は、アイコンと ∨ をゆっくり点滅させて「押せる」と伝える。開いたら止める */
+.info-acc:not(.is-open) .info-icon,
+.info-acc:not(.is-open) .info-chevron {
+  animation: infoBlink 1.6s ease-in-out infinite;
+}
+
+@keyframes infoBlink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .info-acc:not(.is-open) .info-icon,
+  .info-acc:not(.is-open) .info-chevron { animation: none; }
+}
+
 /* 高さ 0 から中身の高さまで、なめらかに開く */
 .info-panel {
   display: grid;
