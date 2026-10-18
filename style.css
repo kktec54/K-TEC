@@ -804,11 +804,11 @@ button.info-item:focus-visible .info-icon {
   transform: scale(1.08);
 }
 
+/* 「押して表示」の代わりに指さしの絵を出す（#28） */
 .info-hint {
-  font-size: 0.85rem;
-  opacity: 0.8;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  display: inline-block;
+  font-size: 1.3rem;
+  line-height: 1.2;
 }
 
 .info-icon {
