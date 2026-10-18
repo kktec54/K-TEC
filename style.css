@@ -784,8 +784,13 @@ header.scrolled .header-logo img {
   gap: 20px;
 }
 
-/* 連絡先はボタンにして、押すとモーダルで出す（#26） */
+/* 連絡先は押すとその場で開くアコーディオン（#26・#32） */
+.contact-info {
+  align-items: start;
+}
+
 button.info-item {
+  width: 100%;
   background: none;
   border: none;
   padding: 0;
@@ -804,11 +809,87 @@ button.info-item:focus-visible .info-icon {
   transform: scale(1.08);
 }
 
-/* 「押して表示」の代わりに指さしの絵を出す（#28） */
-.info-hint {
-  display: inline-block;
-  font-size: 1.3rem;
-  line-height: 1.2;
+.info-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.info-chevron {
+  width: 18px;
+  height: 18px;
+  opacity: 0.7;
+  transition: transform var(--transition-normal), opacity var(--transition-fast);
+}
+
+button.info-item:hover .info-chevron {
+  opacity: 1;
+}
+
+.info-acc.is-open .info-chevron {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* 閉じている間は、アイコンと ∨ をゆっくり点滅させて「押せる」と伝える。開いたら止める */
+.info-acc:not(.is-open) .info-icon,
+.info-acc:not(.is-open) .info-chevron {
+  animation: infoBlink 1.6s ease-in-out infinite;
+}
+
+@keyframes infoBlink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .info-acc:not(.is-open) .info-icon,
+  .info-acc:not(.is-open) .info-chevron { animation: none; }
+}
+
+/* 高さ 0 から中身の高さまで、なめらかに開く */
+.info-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--transition-normal);
+}
+
+.info-acc.is-open .info-panel {
+  grid-template-rows: 1fr;
+}
+
+.info-panel-inner {
+  overflow: hidden;
+}
+
+.info-value {
+  margin: 12px 0 0 70px; /* アイコン（50px）と間（20px）の分だけ右へ */
+  padding-left: 14px;
+  border-left: 2px solid var(--color-accent);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.6;
+  overflow-wrap: anywhere; /* 長いメールだけ途中で折る。番地（256-1）は切らない */
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity var(--transition-normal), transform var(--transition-normal);
+}
+
+.info-acc.is-open .info-value {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.info-value a {
+  color: #ffffff;
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.info-value a:hover {
+  color: var(--color-accent);
 }
 
 .info-icon {
@@ -999,21 +1080,6 @@ footer a:hover {
   .contact-form-open .submit-btn {
     padding: 18px 32px;
   }
-}
-
-.contact-info-modal {
-  width: min(480px, calc(100% - 32px));
-}
-
-.contact-info-value {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: var(--color-primary);
-  word-break: break-all;
-}
-
-.contact-info-value a {
-  color: var(--color-accent);
 }
 
 .contact-modal::backdrop {
