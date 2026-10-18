@@ -185,4 +185,24 @@ document.addEventListener('DOMContentLoaded', () => {
         restart();
         setTimeout(tick, 600);
     }
+
+    // --- お問い合わせフォームのモーダル（#24） ---
+    // ボタンを押したときだけ開く。×ボタン・背景のクリック・Esc キーで閉じる
+    const contactModal = document.getElementById('contact-form');
+    if (contactModal && typeof contactModal.showModal === 'function') {
+        document.querySelectorAll('[data-open-contact]').forEach(opener => {
+            opener.addEventListener('click', (e) => {
+                e.preventDefault();
+                contactModal.showModal();
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        contactModal.querySelector('.contact-modal-close').addEventListener('click', () => contactModal.close());
+        contactModal.addEventListener('click', (e) => {
+            if (e.target === contactModal) contactModal.close();
+        });
+        contactModal.addEventListener('close', () => {
+            document.body.style.overflow = '';
+        });
+    }
 });

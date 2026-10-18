@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>株式会社K-TEC | 京都市山科区の建設会社</title>
   <meta name="description" content="京都市山科区を拠点とする「株式会社K-TEC」の公式ウェブサイト。土木・建設事業を通じて、社会の基盤を創造します。従業員5名、少数精鋭のプロフェッショナル集団です。">
-  <link rel="stylesheet" href="style.css?v=22">
+  <link rel="stylesheet" href="style.css?v=24">
 </head>
 <body>
 
@@ -120,7 +120,7 @@
     <div class="container recruit-content">
       <h2 class="recruit-title lupin-trigger" data-text="成長していく\n時間を共に" data-highlight="成長">成長していく時間を共に</h2>
       <p class="text-balance">K-TECでは、共に成長できる仲間を募集しています。<br>建設のプロフェッショナルとして、社会の基盤を共に作りませんか？<br class="pc-br">少数精鋭だからこそ、一人ひとりの挑戦が会社全体の成長に直結します。</p>
-      <a href="#contact-form" class="recruit-btn">採用について問い合わせる</a>
+      <a href="#contact" class="recruit-btn" data-open-contact>採用について問い合わせる</a>
     </div>
   </section>
 
@@ -176,29 +176,37 @@
       </div>
 
       <!-- Contact Form Section -->
-      <div id="contact-form" class="contact-form-container">
-        <form class="contact-form" action="#" method="post">
-          <div class="form-group">
-            <label for="name">氏名<span>必須</span></label>
-            <input type="text" id="name" name="name" placeholder="例：山田 太郎" required>
-          </div>
-          <div class="form-group">
-            <label for="email">メールアドレス<span>必須</span></label>
-            <input type="email" id="email" name="email" placeholder="例：example@mail.com" required>
-          </div>
-          <div class="form-group">
-            <label for="phone">電話番号</label>
-            <input type="tel" id="phone" name="phone" placeholder="例：090-0000-0000">
-          </div>
-          <div class="form-group">
-            <label for="message">お問い合わせ内容<span>必須</span></label>
-            <textarea id="message" name="message" rows="5" placeholder="ご質問や採用に関するお問い合わせなど、お気軽にご記入ください" required></textarea>
-          </div>
-          <div class="form-submit">
-            <button type="submit" class="submit-btn">内容を送信する</button>
-          </div>
-        </form>
+      <!-- フォームはボタンを押したときだけモーダルで出す（#24） -->
+      <div class="contact-form-open">
+        <button type="button" class="submit-btn" data-open-contact>お問い合わせフォームを開く</button>
       </div>
+      <dialog id="contact-form" class="contact-modal" aria-labelledby="contact-modal-title">
+        <div class="contact-form-container">
+          <button type="button" class="contact-modal-close" aria-label="閉じる">&times;</button>
+          <h3 id="contact-modal-title" class="contact-modal-title">お問い合わせフォーム</h3>
+          <form class="contact-form" action="#" method="post">
+            <div class="form-group">
+              <label for="name">氏名<span>必須</span></label>
+              <input type="text" id="name" name="name" placeholder="例：山田 太郎" required>
+            </div>
+            <div class="form-group">
+              <label for="email">メールアドレス<span>必須</span></label>
+              <input type="email" id="email" name="email" placeholder="例：example@mail.com" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">電話番号</label>
+              <input type="tel" id="phone" name="phone" placeholder="例：090-0000-0000">
+            </div>
+            <div class="form-group">
+              <label for="message">お問い合わせ内容<span>必須</span></label>
+              <textarea id="message" name="message" rows="5" placeholder="ご質問や採用に関するお問い合わせなど、お気軽にご記入ください" required></textarea>
+            </div>
+            <div class="form-submit">
+              <button type="submit" class="submit-btn">内容を送信する</button>
+            </div>
+          </form>
+        </div>
+      </dialog>
 
       <!-- In-house App Teaser -->
       <div id="hp-app" class="app-teaser">
@@ -255,7 +263,7 @@
     </svg>
   </a>
 
-  <script src="main.js?v=22"></script>
-  <script src="code-terminal.js?v=22"></script>
+  <script src="main.js?v=24"></script>
+  <script src="code-terminal.js?v=24"></script>
 </body>
 </html>
