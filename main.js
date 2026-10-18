@@ -186,6 +186,21 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(tick, 600);
     }
 
+    // --- 求人の欄の動画（#36） ---
+    // 画面に映っている間だけ再生する（スマホの通信量と電池の減りを抑える）
+    const recruitVideo = document.querySelector('.recruit-video video');
+    if (recruitVideo && 'IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    recruitVideo.play().catch(() => {});
+                } else {
+                    recruitVideo.pause();
+                }
+            });
+        }, { threshold: 0.25 }).observe(recruitVideo);
+    }
+
     // --- モーダルの共通処理（#24・#26） ---
     // ×ボタン・背景のクリック・Esc キーで閉じる。開いている間は後ろの画面を動かさない
     const setupModal = (modal) => {
