@@ -186,23 +186,68 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(tick, 600);
     }
 
+    // --- モーダルの共通処理（#24・#26） ---
+    // ×ボタン・背景のクリック・Esc キーで閉じる。開いている間は後ろの画面を動かさない
+    const setupModal = (modal) => {
+        modal.querySelector('.contact-modal-close').addEventListener('click', () => modal.close());
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.close();
+        });
+        modal.addEventListener('close', () => {
+            document.body.style.overflow = '';
+        });
+    };
+    const openModal = (modal) => {
+        modal.showModal();
+        document.body.style.overflow = 'hidden';
+    };
+
     // --- お問い合わせフォームのモーダル（#24） ---
-    // ボタンを押したときだけ開く。×ボタン・背景のクリック・Esc キーで閉じる
     const contactModal = document.getElementById('contact-form');
     if (contactModal && typeof contactModal.showModal === 'function') {
+        setupModal(contactModal);
         document.querySelectorAll('[data-open-contact]').forEach(opener => {
             opener.addEventListener('click', (e) => {
                 e.preventDefault();
-                contactModal.showModal();
-                document.body.style.overflow = 'hidden';
+                openModal(contactModal);
             });
         });
-        contactModal.querySelector('.contact-modal-close').addEventListener('click', () => contactModal.close());
-        contactModal.addEventListener('click', (e) => {
-            if (e.target === contactModal) contactModal.close();
-        });
-        contactModal.addEventListener('close', () => {
-            document.body.style.overflow = '';
+    }
+
+    // --- 連絡先のモーダル（#26） ---
+    // 迷惑電話・迷惑メール対策。電話番号とメールはページの文字として置かず、
+    // 押されたときに部品から組み立てる（文字を自動で集めるロボットに拾われにくくする）
+    const infoModal = document.getElementById('contact-info-modal');
+    if (infoModal && typeof infoModal.showModal === 'function') {
+        setupModal(infoModal);
+        const infoTitle = infoModal.querySelector('.contact-modal-title');
+        const infoValue = infoModal.querySelector('.contact-info-value');
+        const infoData = {
+            address: () => ({ title: '所在地', text: '京都市山科区勧修寺西金ケ崎256-1' }),
+            phone: () => {
+                const tel = ['8894', '9549', '090'].reverse().join('-');
+                return { title: '電話番号 (代表)', text: tel, href: 'tel:' + tel.replace(/-/g, '') };
+            },
+            email: () => {
+                const mail = ['k-tec', ['circus', 'ocn', 'ne', 'jp'].join('.')].join(String.fromCharCode(64));
+                return { title: 'メールアドレス', text: mail, href: 'mailto:' + mail };
+            },
+        };
+        document.querySelectorAll('[data-info]').forEach(opener => {
+            opener.addEventListener('click', () => {
+                const info = infoData[opener.dataset.info]();
+                infoTitle.textContent = info.title;
+                infoValue.textContent = '';
+                if (info.href) {
+                    const link = document.createElement('a');
+                    link.href = info.href;
+                    link.textContent = info.text;
+                    infoValue.appendChild(link);
+                } else {
+                    infoValue.textContent = info.text;
+                }
+                openModal(infoModal);
+            });
         });
     }
 });
