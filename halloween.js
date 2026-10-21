@@ -7,8 +7,8 @@
 (() => {
     if (new Date().getMonth() !== 9) return; // 0 始まりなので 9 = 10月
 
-    // ロゴの演出（K-TEC の文字が集まる。main.js で 8.5 秒後に開始、約1秒）が終わってから始める
-    const START_DELAY = 9800;
+    // インスタのボタンが浮き上がって出そろう（style.css の .hero-btn、0.8 秒後から 0.8 秒）のを待って始める（#50）
+    const START_DELAY = 2000;
     const PLAY_TIME = 4800;
     // くり返し（#48）：おばけを10秒見せたら元のボタンに戻し、少し間をあけてまた食べに来る
     const GHOST_TIME = 10000;
