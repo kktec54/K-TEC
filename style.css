@@ -508,6 +508,27 @@ header.scrolled .header-logo img {
   }
 }
 
+/* 高さの低いパソコン画面では、インスタのボタンまで画面の中に収まるよう、ロゴを高さに合わせて縮め、余白を詰める（#43）
+   ロゴ以外の中身と余白で約506px使うので、残りをロゴに回す */
+@media (min-width: 769px) and (max-height: 1050px) {
+  .hero {
+    padding-top: 96px;
+  }
+  .hero-logo-animate-container {
+    width: clamp(200px, calc(100vh - 506px), 400px);
+    margin-bottom: 1rem;
+  }
+  .hero-title {
+    margin-bottom: 0.75rem;
+  }
+  .hero-brand-final {
+    margin-bottom: 1rem;
+  }
+  .hero-description {
+    margin-bottom: 1.25rem;
+  }
+}
+
 .hero-btn {
   display: inline-block;
   padding: 15px 40px;
