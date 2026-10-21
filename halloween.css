@@ -57,8 +57,7 @@
   visibility: hidden; /* 始まるまでは何も見せない */
 }
 
-.hw.is-play,
-.hw.is-static {
+.hw.is-play {
   visibility: visible;
 }
 
@@ -175,13 +174,6 @@
 .hw.is-done .hw-ghost { pointer-events: auto; cursor: pointer; }
 .hw.is-done .hw-ghost:hover svg,
 .hw.is-done .hw-ghost:focus-visible svg { transform: scale(1.08); }
-
-/* 動きを減らす設定の人：かぼちゃは出さず、最初からおばけと文字を出す */
-.hw.is-static .hw-ig,
-.hw.is-static .hw-pk-enter { display: none; }
-.hw.is-static .hw-ghost,
-.hw.is-static .hw-ch { opacity: 1; }
-.hero.is-halloween-static .hw-bats { display: none; }
 
 @keyframes hwPkEnter {
   0% { opacity: 0; transform: translateY(300px); }
