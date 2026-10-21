@@ -10,6 +10,10 @@
     // ロゴの演出（K-TEC の文字が集まる。main.js で 8.5 秒後に開始、約1秒）が終わってから始める
     const START_DELAY = 9800;
     const PLAY_TIME = 4800;
+    // くり返し（#48）：おばけを10秒見せたら元のボタンに戻し、少し間をあけてまた食べに来る
+    const GHOST_TIME = 10000;
+    const RESET_TIME = 900;
+    const BUTTON_TIME = 1500;
 
     const BAT = `<svg viewBox="0 0 120 90">
         <g class="hw-wl"><path d="M48 46 C38 40 22 34 12 18 C6 34 4 56 8 76 C12 70 18 70 20 76 C24 68 30 68 33 74 C36 66 42 66 46 70 Z"/></g>
@@ -162,18 +166,35 @@
         window.addEventListener('load', place);
 
         // 「アニメーションを減らす」設定の人にも同じ演出を見せる（#46）
-        setTimeout(() => {
+        const play = () => {
             place();
             // 本物のボタンを隠し、食べられる複製と入れ替える
             hero.classList.add('is-halloween-swapped');
             btn.setAttribute('tabindex', '-1');
             btn.setAttribute('aria-hidden', 'true');
-            layer.classList.add('is-play');
+            layer.classList.add('is-started', 'is-text', 'is-play');
             // 演出が終わったら、おばけをボタンとして押せるようにする
             setTimeout(() => {
                 layer.classList.add('is-done');
                 ghost.removeAttribute('tabindex');
+                setTimeout(reset, GHOST_TIME);
             }, PLAY_TIME);
-        }, START_DELAY);
+        };
+
+        // おばけを消して元のボタンに戻し、押せるようにしてから、また演出を始める
+        const reset = () => {
+            layer.classList.remove('is-done');
+            ghost.setAttribute('tabindex', '-1');
+            layer.classList.add('is-reset');
+            setTimeout(() => {
+                layer.classList.remove('is-play', 'is-reset');
+                hero.classList.remove('is-halloween-swapped');
+                btn.removeAttribute('tabindex');
+                btn.removeAttribute('aria-hidden');
+                setTimeout(play, BUTTON_TIME);
+            }, RESET_TIME);
+        };
+
+        setTimeout(play, START_DELAY);
     });
 })();

@@ -57,7 +57,7 @@
   visibility: hidden; /* 始まるまでは何も見せない */
 }
 
-.hw.is-play {
+.hw.is-started {
   visibility: visible;
 }
 
@@ -164,16 +164,30 @@
 .hw.is-play .hw-star { animation: hwStar 4.8s both; }
 .hw.is-play .hw-ghost { animation: hwGhostOut 4.8s both; }
 .hw.is-play .hw-ghost-bob { animation: hwBob 2.4s ease-in-out 4.8s infinite; }
-.hw.is-play .hw-ch { animation: hwLetterPop .55s cubic-bezier(.3, 1.7, .5, 1) calc(4s + var(--i) * .06s) both,
+/* 文字と星は最初の1回だけ出し、あとは出したままにする（#48） */
+.hw.is-text .hw-ch { animation: hwLetterPop .55s cubic-bezier(.3, 1.7, .5, 1) calc(4s + var(--i) * .06s) both,
                                hwLetterWiggle 3.2s ease-in-out calc(5.2s + var(--i) * .12s) infinite; }
-.hw.is-play .hw-tw { animation: hwTwinkle 1.8s ease-in-out 4.6s infinite; }
-.hw.is-play .hw-tw.t2 { animation-delay: 5.1s; }
-.hw.is-play .hw-tw.t3 { animation-delay: 5.5s; }
+.hw.is-text .hw-tw { animation: hwTwinkle 1.8s ease-in-out 4.6s infinite; }
+.hw.is-text .hw-tw.t2 { animation-delay: 5.1s; }
+.hw.is-text .hw-tw.t3 { animation-delay: 5.5s; }
 
 /* 再生が終わったら、おばけを押せるようにする */
 .hw.is-done .hw-ghost { pointer-events: auto; cursor: pointer; }
 .hw.is-done .hw-ghost:hover svg,
 .hw.is-done .hw-ghost:focus-visible svg { transform: scale(1.08); }
+
+/* くり返す前に、おばけが「ぽんっ」と消えて、元の丸いボタンが飛び出して戻る（#48） */
+.hw.is-reset .hw-ghost { animation: hwPoof .4s ease-in both; }
+.hw.is-reset .hw-ig { animation: hwPopIn .5s cubic-bezier(.3, 1.7, .5, 1) .25s both; }
+
+@keyframes hwPoof {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.35); }
+}
+@keyframes hwPopIn {
+  0% { opacity: 0; transform: scale(0); }
+  100% { opacity: 1; transform: scale(1); }
+}
 
 @keyframes hwPkEnter {
   0% { opacity: 0; transform: translateY(300px); }
