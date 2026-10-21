@@ -158,34 +158,22 @@
             center.style.top = `${y}px`;
         };
 
-        // 本物のボタンを隠し、おばけをボタンとして使えるようにする
-        const swapToGhost = () => {
-            hero.classList.add('is-halloween-swapped');
-            btn.setAttribute('tabindex', '-1');
-            btn.setAttribute('aria-hidden', 'true');
-        };
-        const enableGhost = () => {
-            layer.classList.add('is-done');
-            ghost.removeAttribute('tabindex');
-        };
-
         window.addEventListener('resize', place);
         window.addEventListener('load', place);
 
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            hero.classList.add('is-halloween-static');
-            layer.classList.add('is-static');
-            place();
-            swapToGhost();
-            enableGhost();
-            return;
-        }
-
+        // 「アニメーションを減らす」設定の人にも同じ演出を見せる（#46）
         setTimeout(() => {
             place();
-            swapToGhost();
+            // 本物のボタンを隠し、食べられる複製と入れ替える
+            hero.classList.add('is-halloween-swapped');
+            btn.setAttribute('tabindex', '-1');
+            btn.setAttribute('aria-hidden', 'true');
             layer.classList.add('is-play');
-            setTimeout(enableGhost, PLAY_TIME);
+            // 演出が終わったら、おばけをボタンとして押せるようにする
+            setTimeout(() => {
+                layer.classList.add('is-done');
+                ghost.removeAttribute('tabindex');
+            }, PLAY_TIME);
         }, START_DELAY);
     });
 })();
