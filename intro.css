@@ -17,7 +17,8 @@
 
 /* 画面に収まる大きさで置く。縦の位置は intro.js が、最後の光がロゴの真ん中に重なるように合わせる（#56）
    端が切れて見えないよう、上下（25%）と左右の端を白へぼかす。動画そのものも上下の端を白へぼかしてある（#58） */
-.intro-video {
+.intro-video,
+.intro-canvas {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -32,6 +33,26 @@
   mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.35) 10%, #000 25%, #000 75%, rgba(0, 0, 0, 0.35) 90%, transparent 100%),
               linear-gradient(to right, transparent 0%, #000 4%, #000 96%, transparent 100%);
   mask-composite: intersect;
+}
+
+/* canvas に描けている間は、canvas だけを見せる（#60） */
+.intro-canvas {
+  opacity: 0;
+  background: transparent;
+}
+.intro-canvas.is-drawing {
+  opacity: 1;
+}
+.intro-video.is-behind-canvas {
+  opacity: 0.01;
+}
+
+/* 縦長の画面（スマホ）では、少し大きくする。はみ出した左右は画面の外に出る（#60） */
+@media (orientation: portrait) {
+  .intro-video,
+  .intro-canvas {
+    width: 120vw;
+  }
 }
 
 .intro-skip {

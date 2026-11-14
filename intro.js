@@ -53,6 +53,60 @@
     // 動画の最後の光は、動画の横の真ん中・上から約30% に出る。
     // そこがロゴの真ん中に重なるように動画の縦の位置を合わせる（#56）
     const BURST_Y = 0.30;
+
+    // 動画をそのまま見せると、スマホ（特に iPhone）では動画の白がページの白より少し暗く出て、
+    // 四角の境目が線に見える。canvas に1コマずつ描き写して見せ、ページと同じ白にする（#60）。
+    // canvas が使えないときは、今までどおり動画を見せる。
+    let canvas = null;
+    let ctx = null;
+    if (video) {
+        try {
+            canvas = document.createElement('canvas');
+            canvas.className = 'intro-canvas';
+            canvas.setAttribute('aria-hidden', 'true');
+            ctx = canvas.getContext('2d');
+        } catch (e) { ctx = null; }
+        if (ctx) {
+            overlay.insertBefore(canvas, video.nextSibling);
+        } else {
+            canvas = null;
+        }
+    }
+    let canvasOk = !!ctx;
+    const drawFrame = () => {
+        if (!canvasOk || !overlay.isConnected) return;
+        if (video.readyState >= 2) {
+            const rect = video.getBoundingClientRect();
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            const w = Math.round(rect.width * dpr);
+            const h = Math.round(rect.height * dpr);
+            if (w && h) {
+                if (canvas.width !== w || canvas.height !== h) {
+                    canvas.width = w;
+                    canvas.height = h;
+                }
+                try {
+                    ctx.drawImage(video, 0, 0, w, h);
+                    // 描けたら、元の動画はほぼ見えなくする（完全に隠すと、止まるスマホがある）
+                    video.classList.add('is-behind-canvas');
+                    canvas.classList.add('is-drawing');
+                } catch (e) {
+                    canvasOk = false;
+                    video.classList.remove('is-behind-canvas');
+                    canvas.classList.remove('is-drawing');
+                    return;
+                }
+            }
+        }
+        if (video.requestVideoFrameCallback) video.requestVideoFrameCallback(drawFrame);
+        else requestAnimationFrame(drawFrame);
+    };
+    if (canvasOk) {
+        video.addEventListener('playing', () => {
+            if (video.requestVideoFrameCallback) video.requestVideoFrameCallback(drawFrame);
+            else requestAnimationFrame(drawFrame);
+        }, { once: true });
+    }
     const placeVideo = () => {
         const logo = document.querySelector('.hero-logo-animate-container');
         if (!video || !logo) return;
@@ -62,8 +116,11 @@
         const logoCenterY = r.top + r.height / 2;
         // 開き直しでページの途中にいるなど、ロゴが画面に無いときは真ん中のままにする
         if (logoCenterY < 0 || logoCenterY > window.innerHeight) return;
-        video.style.top = `${logoCenterY - BURST_Y * h}px`;
-        video.style.transform = 'translateX(-50%)';
+        [video, canvas].forEach((el) => {
+            if (!el) return;
+            el.style.top = `${logoCenterY - BURST_Y * h}px`;
+            el.style.transform = 'translateX(-50%)';
+        });
     };
     document.addEventListener('DOMContentLoaded', placeVideo);
     window.addEventListener('resize', placeVideo);
