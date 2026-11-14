@@ -33,7 +33,6 @@
     // 流す日だけ動画を読み込む（ほかの日に無駄な読み込みをしない）
     if (video && video.dataset.src) video.src = video.dataset.src;
     if (video && video.dataset.poster) video.poster = video.dataset.poster;
-    const skip = overlay.querySelector('.intro-skip');
     document.documentElement.classList.add('is-intro-playing');
 
     // 再生中は、動画の後ろに隠れたページを Tab で選べないようにする
@@ -54,59 +53,6 @@
     // そこがロゴの真ん中に重なるように動画の縦の位置を合わせる（#56）
     const BURST_Y = 0.30;
 
-    // 動画をそのまま見せると、スマホ（特に iPhone）では動画の白がページの白より少し暗く出て、
-    // 四角の境目が線に見える。canvas に1コマずつ描き写して見せ、ページと同じ白にする（#60）。
-    // canvas が使えないときは、今までどおり動画を見せる。
-    let canvas = null;
-    let ctx = null;
-    if (video) {
-        try {
-            canvas = document.createElement('canvas');
-            canvas.className = 'intro-canvas';
-            canvas.setAttribute('aria-hidden', 'true');
-            ctx = canvas.getContext('2d');
-        } catch (e) { ctx = null; }
-        if (ctx) {
-            overlay.insertBefore(canvas, video.nextSibling);
-        } else {
-            canvas = null;
-        }
-    }
-    let canvasOk = !!ctx;
-    const drawFrame = () => {
-        if (!canvasOk || !overlay.isConnected) return;
-        if (video.readyState >= 2) {
-            const rect = video.getBoundingClientRect();
-            const dpr = Math.min(window.devicePixelRatio || 1, 2);
-            const w = Math.round(rect.width * dpr);
-            const h = Math.round(rect.height * dpr);
-            if (w && h) {
-                if (canvas.width !== w || canvas.height !== h) {
-                    canvas.width = w;
-                    canvas.height = h;
-                }
-                try {
-                    ctx.drawImage(video, 0, 0, w, h);
-                    // 描けたら、元の動画はほぼ見えなくする（完全に隠すと、止まるスマホがある）
-                    video.classList.add('is-behind-canvas');
-                    canvas.classList.add('is-drawing');
-                } catch (e) {
-                    canvasOk = false;
-                    video.classList.remove('is-behind-canvas');
-                    canvas.classList.remove('is-drawing');
-                    return;
-                }
-            }
-        }
-        if (video.requestVideoFrameCallback) video.requestVideoFrameCallback(drawFrame);
-        else requestAnimationFrame(drawFrame);
-    };
-    if (canvasOk) {
-        video.addEventListener('playing', () => {
-            if (video.requestVideoFrameCallback) video.requestVideoFrameCallback(drawFrame);
-            else requestAnimationFrame(drawFrame);
-        }, { once: true });
-    }
     const placeVideo = () => {
         const logo = document.querySelector('.hero-logo-animate-container');
         if (!video || !logo) return;
@@ -116,11 +62,8 @@
         const logoCenterY = r.top + r.height / 2;
         // 開き直しでページの途中にいるなど、ロゴが画面に無いときは真ん中のままにする
         if (logoCenterY < 0 || logoCenterY > window.innerHeight) return;
-        [video, canvas].forEach((el) => {
-            if (!el) return;
-            el.style.top = `${logoCenterY - BURST_Y * h}px`;
-            el.style.transform = 'translateX(-50%)';
-        });
+        video.style.top = `${logoCenterY - BURST_Y * h}px`;
+        video.style.transform = 'translateX(-50%)';
         glowY = logoCenterY;
         overlay.style.setProperty('--intro-glow-y', `${Math.round(logoCenterY)}px`);
     };
@@ -174,12 +117,13 @@
                 parts = [];
                 return;
             }
-            dpr = Math.min(window.devicePixelRatio || 1, 2);
+            // 軽くするため、画面の画素の倍率は 1 にする（粒はぼんやり光る絵なので粗さは目立たない）（#64）
+            dpr = 1;
             W = window.innerWidth;
             H = window.innerHeight;
             sparkleCanvas.width = Math.round(W * dpr);
             sparkleCanvas.height = Math.round(H * dpr);
-            const count = Math.round(Math.min(110, Math.max(45, (W * H) / 9000)));
+            const count = Math.round(Math.min(60, Math.max(28, (W * H) / 14000)));
             parts = Array.from({ length: count }, () => makePart(true));
         };
         resize();
@@ -187,6 +131,8 @@
         let last = performance.now();
         const tick = (now) => {
             if (!overlay.isConnected) { resize(); return; }
+            // 描き直しは1秒に約30回までにする（#64）
+            if (now - last < 30) { requestAnimationFrame(tick); return; }
             const dt = Math.min((now - last) / 1000, 0.1);
             last = now;
             sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -227,7 +173,6 @@
         }, FADE_MS);
     };
 
-    if (skip) skip.addEventListener('click', finish);
     if (!video) { finish(); return; }
 
     // 最後の光がはじけている間に消し始め、ロゴへ滑らかに切り替える
