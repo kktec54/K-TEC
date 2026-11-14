@@ -1248,6 +1248,18 @@ footer a:hover {
   box-shadow: 0 16px 36px rgba(214, 36, 159, 0.5);
 }
 
+/* 一番上の Instagram ボタンが見えている間は隠す（main.js が is-managed を付けて切り替える）（#54） */
+.floating-instagram.is-managed {
+  animation: none;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, visibility 0.4s, box-shadow 0.3s ease;
+}
+
+.floating-instagram.is-managed.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(60px);
+}
+
 @keyframes floatIn {
   from { opacity: 0; transform: translateX(60px); }
   to   { opacity: 1; transform: translateX(0); }
