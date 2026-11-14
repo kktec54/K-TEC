@@ -91,6 +91,16 @@ document.addEventListener('DOMContentLoaded', () => {
         animationObserver.observe(el);
     });
 
+    // --- 右下の Instagram ボタンは、一番上のボタンが画面から消えてから出す（#54） ---
+    const floatingInsta = document.querySelector('.floating-instagram');
+    const heroInsta = document.querySelector('.hero .instagram-icon-btn');
+    if (floatingInsta && heroInsta && 'IntersectionObserver' in window) {
+        floatingInsta.classList.add('is-managed', 'is-hidden');
+        new IntersectionObserver((entries) => {
+            floatingInsta.classList.toggle('is-hidden', entries[0].isIntersecting);
+        }).observe(heroInsta);
+    }
+
     // --- ヒーローの演出は、オープニング（#52）が終わってから始める ---
     (window.ktecIntroDone || Promise.resolve()).then(() => {
         // --- Hero Logo Animation Repeat Logic ---
