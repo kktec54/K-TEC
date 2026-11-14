@@ -2,6 +2,7 @@
  * トップページのオープニング（金の龍の動画）（#52）
  * - 終わったら window.ktecIntroDone（Promise）を解決する。
  *   ロゴ・見出し・ハロウィンの演出は、これを待ってから始める。
+ * - 流すのは、日本時間で4と5のつく日（4・5・14・15・24・25日）だけ。
  * - 同じタブで2回目に開いたとき・自動で流せないときは飛ばす。
  */
 (function () {
@@ -14,13 +15,24 @@
     try { seen = sessionStorage.getItem(SEEN_KEY) === '1'; } catch (e) { /* 使えないときは毎回流す */ }
     // 「アニメーションを減らす」設定の人にも見せる（ハロウィンの #46 と同じ）
 
-    if (!overlay || seen) {
+    // 4と5のつく日だけ流す（見る人の PC の時刻設定に関係なく、日本時間で決める）
+    const SHOW_DAYS = [4, 5, 14, 15, 24, 25];
+    let day = new Date().getDate();
+    try {
+        day = Number(new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Tokyo', day: 'numeric' }).format(new Date()));
+    } catch (e) { /* 使えないときは PC の日付で決める */ }
+    const isShowDay = SHOW_DAYS.includes(day);
+
+    if (!overlay || seen || !isShowDay) {
         if (overlay) overlay.remove();
         resolveDone();
         return;
     }
 
     const video = overlay.querySelector('video');
+    // 流す日だけ動画を読み込む（ほかの日に無駄な読み込みをしない）
+    if (video && video.dataset.src) video.src = video.dataset.src;
+    if (video && video.dataset.poster) video.poster = video.dataset.poster;
     const skip = overlay.querySelector('.intro-skip');
     document.documentElement.classList.add('is-intro-playing');
 
