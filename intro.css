@@ -19,8 +19,7 @@
 
 /* 画面に収まる大きさで置く。縦の位置は intro.js が、最後の光がロゴの真ん中に重なるように合わせる（#56）
    端が切れて見えないよう、上下（25%）と左右の端を白へぼかす。動画そのものも上下の端を白へぼかしてある（#58） */
-.intro-video,
-.intro-canvas {
+.intro-video {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -46,49 +45,15 @@
 }
 
 /* 動画の白い所を透けさせ、金の光とキラキラの上に龍を重ねる（#62） */
-.intro-video,
-.intro-canvas {
+.intro-video {
   mix-blend-mode: multiply;
-}
-
-/* canvas に描けている間は、canvas だけを見せる（#60） */
-.intro-canvas {
-  opacity: 0;
-  background: transparent;
-}
-.intro-canvas.is-drawing {
-  opacity: 1;
-}
-.intro-video.is-behind-canvas {
-  opacity: 0.01;
 }
 
 /* 縦長の画面（スマホ）では、少し大きくする。はみ出した左右は画面の外に出る（#60） */
 @media (orientation: portrait) {
-  .intro-video,
-  .intro-canvas {
+  .intro-video {
     width: 120vw;
   }
-}
-
-.intro-skip {
-  position: absolute;
-  right: 20px;
-  bottom: 24px;
-  padding: 8px 18px;
-  font-size: 0.9rem;
-  letter-spacing: 0.1em;
-  color: rgba(0, 0, 0, 0.6);
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 999px;
-  cursor: pointer;
-}
-
-.intro-skip:hover,
-.intro-skip:focus-visible {
-  color: #000;
-  border-color: #000;
 }
 
 /* オープニング中はページを動かさない */
