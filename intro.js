@@ -121,7 +121,90 @@
             el.style.top = `${logoCenterY - BURST_Y * h}px`;
             el.style.transform = 'translateX(-50%)';
         });
+        glowY = logoCenterY;
+        overlay.style.setProperty('--intro-glow-y', `${Math.round(logoCenterY)}px`);
     };
+
+    // 画面全体の金の光とキラキラ（#62）。
+    // 龍とキラキラは元の動画の端で切れるので、画面全体にキラキラを出して境目を目立たなくする。
+    // 動画の白い所は透けさせて（intro.css の mix-blend-mode）、この上に龍を重ねる。
+    let glowY = window.innerHeight * 0.35;
+    const sparkleCanvas = document.createElement('canvas');
+    sparkleCanvas.className = 'intro-sparkles';
+    sparkleCanvas.setAttribute('aria-hidden', 'true');
+    const sctx = sparkleCanvas.getContext && sparkleCanvas.getContext('2d');
+    if (sctx) {
+        overlay.insertBefore(sparkleCanvas, overlay.firstChild);
+        const COLORS = ['255, 196, 40', '255, 214, 90', '240, 160, 20'];
+        // 光る粒の絵を色ごとに1回だけ作っておき、毎コマはそれを貼るだけにする（軽くするため）
+        const sprites = COLORS.map((c) => {
+            const s = document.createElement('canvas');
+            s.width = s.height = 32;
+            const g = s.getContext('2d');
+            const grad = g.createRadialGradient(16, 16, 0, 16, 16, 16);
+            grad.addColorStop(0, `rgba(${c}, 1)`);
+            grad.addColorStop(0.25, `rgba(${c}, 0.85)`);
+            grad.addColorStop(1, `rgba(${c}, 0)`);
+            g.fillStyle = grad;
+            g.fillRect(0, 0, 32, 32);
+            return s;
+        });
+        let W = 0, H = 0, dpr = 1, parts = [];
+        const rand = (a, b) => a + Math.random() * (b - a);
+        const makePart = (anywhere) => {
+            // 光の中心（ロゴの位置）の近くほど多く出す
+            const spread = Math.max(W, H) * 0.55;
+            const y = anywhere ? glowY + (Math.random() - 0.5) * 2 * spread : H + 10;
+            return {
+                x: W / 2 + (Math.random() - 0.5) * 2 * Math.min(spread, W * 0.6) * Math.sqrt(Math.random()),
+                y,
+                size: rand(4, 12),
+                speed: rand(6, 22),          // 1秒に上へ進む px
+                drift: rand(-8, 8),
+                phase: rand(0, Math.PI * 2),
+                tw: rand(1.5, 4),            // またたく速さ
+                sprite: sprites[Math.floor(Math.random() * sprites.length)],
+            };
+        };
+        const resize = () => {
+            // 演出が終わったら、見張りを外して描画領域を手放す
+            if (!overlay.isConnected) {
+                window.removeEventListener('resize', resize);
+                sparkleCanvas.width = sparkleCanvas.height = 0;
+                parts = [];
+                return;
+            }
+            dpr = Math.min(window.devicePixelRatio || 1, 2);
+            W = window.innerWidth;
+            H = window.innerHeight;
+            sparkleCanvas.width = Math.round(W * dpr);
+            sparkleCanvas.height = Math.round(H * dpr);
+            const count = Math.round(Math.min(110, Math.max(45, (W * H) / 9000)));
+            parts = Array.from({ length: count }, () => makePart(true));
+        };
+        resize();
+        window.addEventListener('resize', resize);
+        let last = performance.now();
+        const tick = (now) => {
+            if (!overlay.isConnected) { resize(); return; }
+            const dt = Math.min((now - last) / 1000, 0.1);
+            last = now;
+            sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            sctx.clearRect(0, 0, W, H);
+            const t = now / 1000;
+            parts.forEach((p, i) => {
+                p.y -= p.speed * dt;
+                p.x += p.drift * dt;
+                if (p.y < -20 || p.x < -20 || p.x > W + 20) parts[i] = p = makePart(false);
+                const a = 0.35 + 0.65 * Math.max(0, Math.sin(t * p.tw + p.phase));
+                sctx.globalAlpha = a;
+                sctx.drawImage(p.sprite, p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+            });
+            sctx.globalAlpha = 1;
+            requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+    }
     document.addEventListener('DOMContentLoaded', placeVideo);
     window.addEventListener('resize', placeVideo);
 
