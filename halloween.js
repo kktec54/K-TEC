@@ -195,6 +195,7 @@
             }, RESET_TIME);
         };
 
-        setTimeout(play, START_DELAY);
+        // オープニング（#52）が終わってから数える
+        (window.ktecIntroDone || Promise.resolve()).then(() => setTimeout(play, START_DELAY));
     });
 })();

@@ -1,0 +1,57 @@
+/* トップページのオープニング（金の龍の動画）（#52） */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1.4s ease-in-out;
+}
+
+.intro-overlay.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 背景が白い動画なので、縦長の画面では上下を白で埋める */
+.intro-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+}
+
+.intro-skip {
+  position: absolute;
+  right: 20px;
+  bottom: 24px;
+  padding: 8px 18px;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  color: rgba(0, 0, 0, 0.6);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.intro-skip:hover,
+.intro-skip:focus-visible {
+  color: #000;
+  border-color: #000;
+}
+
+/* オープニング中はページを動かさない */
+html.is-intro-playing,
+html.is-intro-playing body {
+  overflow: hidden;
+}
+
+/* オープニングのあと最初の1回だけ、ロゴの演出を約1.4秒進めた所から始め、
+   動画が消えるのと重ねて滑らかにつなぐ（main.js が .is-handoff を付ける） */
+.hero-logo-animate-container.is-animating.is-handoff .core-light { animation-delay: -1.4s; }
+.hero-logo-animate-container.is-animating.is-handoff .flash { animation-delay: -0.2s; }
+.hero-logo-animate-container.is-animating.is-handoff .hero-animate-logo { animation-delay: -1.15s; }
+.hero-logo-animate-container.is-animating.is-handoff .white-burst { animation-delay: -1.05s; }
