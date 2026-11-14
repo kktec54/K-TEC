@@ -101,41 +101,48 @@ document.addEventListener('DOMContentLoaded', () => {
         }).observe(heroInsta);
     }
 
-    // --- Hero Logo Animation Repeat Logic ---
-    const logoContainer = document.querySelector('.hero-logo-animate-container');
+    // --- ヒーローの演出は、オープニング（#52）が終わってから始める ---
+    (window.ktecIntroDone || Promise.resolve()).then(() => {
+        // --- Hero Logo Animation Repeat Logic ---
+        const logoContainer = document.querySelector('.hero-logo-animate-container');
     
-    if (logoContainer) {
-        const triggerLogoAnimation = () => {
-            logoContainer.classList.remove('is-animating');
-            void logoContainer.offsetWidth; // Force reflow to reset CSS animations
-            logoContainer.classList.add('is-animating');
-        };
+        if (logoContainer) {
+            // オープニングのあとの最初の1回だけ、途中から始めてつなぐ（intro.css の .is-handoff）
+            let handoff = !!window.ktecIntroHandoff;
+            const triggerLogoAnimation = () => {
+                logoContainer.classList.remove('is-animating');
+                logoContainer.classList.toggle('is-handoff', handoff);
+                handoff = false;
+                void logoContainer.offsetWidth; // Force reflow to reset CSS animations
+                logoContainer.classList.add('is-animating');
+            };
 
-        // Initial play
-        triggerLogoAnimation();
+            // Initial play
+            triggerLogoAnimation();
 
-        // Repeat every 8 seconds (8000ms) for a much slower, grander sequence
-        setInterval(triggerLogoAnimation, 8000);
-    }
+            // Repeat every 8 seconds (8000ms) for a much slower, grander sequence
+            setInterval(triggerLogoAnimation, 8000);
+        }
 
-    // --- Hero Title Animation Trigger (Delayed to wait for logo reveal) ---
-    const heroTitle = document.querySelector('.hero-title');
-    if(heroTitle) {
-        setTimeout(() => {
-            heroTitle.style.opacity = "1";
-            const text = "次代へと繋ぐ礎　揺るぎない技術";
-            lupinAnimate(heroTitle, text, ["礎", "技術"]);
-        }, 4500); // Further delayed for slower logo reveal
-    }
+        // --- Hero Title Animation Trigger (Delayed to wait for logo reveal) ---
+        const heroTitle = document.querySelector('.hero-title');
+        if(heroTitle) {
+            setTimeout(() => {
+                heroTitle.style.opacity = "1";
+                const text = "次代へと繋ぐ礎　揺るぎない技術";
+                lupinAnimate(heroTitle, text, ["礎", "技術"]);
+            }, 4500); // Further delayed for slower logo reveal
+        }
 
-    // --- Hero Brand Logo Gathering Animation ---
-    const brandFinal = document.querySelector('.hero-brand-final');
-    if (brandFinal) {
-        setTimeout(() => {
-            brandFinal.classList.add('show');
-            brandFinal.classList.add('is-gathered');
-        }, 8500); 
-    }
+        // --- Hero Brand Logo Gathering Animation ---
+        const brandFinal = document.querySelector('.hero-brand-final');
+        if (brandFinal) {
+            setTimeout(() => {
+                brandFinal.classList.add('show');
+                brandFinal.classList.add('is-gathered');
+            }, 8500); 
+        }
+    });
 
     // --- 自社開発アプリのカード：DM の案内と CODE\10 を1文字ずつ打ち込み、くり返す（#16・#22） ---
     // 1文字ずつ5色からランダムに色を付け、打ち直すたびに色を変える（#18）
