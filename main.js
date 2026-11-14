@@ -97,8 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const logoContainer = document.querySelector('.hero-logo-animate-container');
     
         if (logoContainer) {
+            // オープニングのあとの最初の1回だけ、途中から始めてつなぐ（intro.css の .is-handoff）
+            let handoff = !!window.ktecIntroHandoff;
             const triggerLogoAnimation = () => {
                 logoContainer.classList.remove('is-animating');
+                logoContainer.classList.toggle('is-handoff', handoff);
+                handoff = false;
                 void logoContainer.offsetWidth; // Force reflow to reset CSS animations
                 logoContainer.classList.add('is-animating');
             };

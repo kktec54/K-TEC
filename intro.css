@@ -3,11 +3,11 @@
   position: fixed;
   inset: 0;
   z-index: 10000;
-  background: #000;
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.8s ease;
+  transition: opacity 1.4s ease-in-out;
 }
 
 .intro-overlay.is-leaving {
@@ -15,12 +15,12 @@
   pointer-events: none;
 }
 
-/* 背景が黒い動画なので、縦長の画面では上下を黒で埋める */
+/* 背景が白い動画なので、縦長の画面では上下を白で埋める */
 .intro-video {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  background: #000;
+  background: #fff;
 }
 
 .intro-skip {
@@ -30,17 +30,17 @@
   padding: 8px 18px;
   font-size: 0.9rem;
   letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.85);
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.6);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 999px;
   cursor: pointer;
 }
 
 .intro-skip:hover,
 .intro-skip:focus-visible {
-  color: #fff;
-  border-color: #fff;
+  color: #000;
+  border-color: #000;
 }
 
 /* オープニング中はページを動かさない */
@@ -48,3 +48,10 @@ html.is-intro-playing,
 html.is-intro-playing body {
   overflow: hidden;
 }
+
+/* オープニングのあと最初の1回だけ、ロゴの演出を約1.4秒進めた所から始め、
+   動画が消えるのと重ねて滑らかにつなぐ（main.js が .is-handoff を付ける） */
+.hero-logo-animate-container.is-animating.is-handoff .core-light { animation-delay: -1.4s; }
+.hero-logo-animate-container.is-animating.is-handoff .flash { animation-delay: -0.2s; }
+.hero-logo-animate-container.is-animating.is-handoff .hero-animate-logo { animation-delay: -1.15s; }
+.hero-logo-animate-container.is-animating.is-handoff .white-burst { animation-delay: -1.05s; }

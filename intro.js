@@ -2,7 +2,7 @@
  * トップページのオープニング（金の龍の動画）（#52）
  * - 終わったら window.ktecIntroDone（Promise）を解決する。
  *   ロゴ・見出し・ハロウィンの演出は、これを待ってから始める。
- * - 同じタブで2回目に開いたとき・「アニメーションを減らす」設定・自動で流せないときは飛ばす。
+ * - 同じタブで2回目に開いたとき・自動で流せないときは飛ばす。
  */
 (function () {
     const overlay = document.getElementById('intro-overlay');
@@ -12,9 +12,9 @@
     const SEEN_KEY = 'ktec-intro-seen';
     let seen = false;
     try { seen = sessionStorage.getItem(SEEN_KEY) === '1'; } catch (e) { /* 使えないときは毎回流す */ }
-    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // 「アニメーションを減らす」設定の人にも見せる（ハロウィンの #46 と同じ）
 
-    if (!overlay || seen || reduce) {
+    if (!overlay || seen) {
         if (overlay) overlay.remove();
         resolveDone();
         return;
@@ -39,27 +39,35 @@
     document.addEventListener('DOMContentLoaded', setInert);
 
     let finished = false;
+    const FADE_MS = 1400;     // 動画が消えるまでの時間（intro.css の transition と合わせる）
+    const HANDOFF_SEC = 0.6;  // 動画の終わりの何秒前から消し始めるか
     const finish = () => {
         if (finished) return;
         finished = true;
         try { sessionStorage.setItem(SEEN_KEY, '1'); } catch (e) { /* 何もしない */ }
         document.documentElement.classList.remove('is-intro-playing');
         inertTargets.forEach((el) => { el.inert = false; });
+        // ロゴの演出を途中から始め、動画が消えるのと重ねてつなぐ（intro.css の .is-handoff）
+        window.ktecIntroHandoff = true;
         overlay.classList.add('is-leaving');
         resolveDone();
         setTimeout(() => {
             if (video) video.pause();
             overlay.remove();
-        }, 800);
+        }, FADE_MS);
     };
 
     if (skip) skip.addEventListener('click', finish);
     if (!video) { finish(); return; }
 
+    // 最後の光がはじけている間に消し始め、ロゴへ滑らかに切り替える
+    video.addEventListener('timeupdate', () => {
+        if (video.duration && video.duration - video.currentTime <= HANDOFF_SEC) finish();
+    });
     video.addEventListener('ended', finish);
     video.addEventListener('error', finish);
 
-    // 読み込みが遅い・止まったときの保険（動画は10秒）
+    // 読み込みが遅い・止まったときの保険（動画は約8.5秒）
     const giveUp = setTimeout(finish, 4000);
     video.addEventListener('playing', () => {
         clearTimeout(giveUp);
