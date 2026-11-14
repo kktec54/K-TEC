@@ -50,6 +50,24 @@
     };
     document.addEventListener('DOMContentLoaded', setInert);
 
+    // 動画の最後の光は、動画の横の真ん中・上から約30% に出る。
+    // そこがロゴの真ん中に重なるように動画の縦の位置を合わせる（#56）
+    const BURST_Y = 0.30;
+    const placeVideo = () => {
+        const logo = document.querySelector('.hero-logo-animate-container');
+        if (!video || !logo) return;
+        const h = video.getBoundingClientRect().height;
+        const r = logo.getBoundingClientRect();
+        if (!h || !r.height) return;
+        const logoCenterY = r.top + r.height / 2;
+        // 開き直しでページの途中にいるなど、ロゴが画面に無いときは真ん中のままにする
+        if (logoCenterY < 0 || logoCenterY > window.innerHeight) return;
+        video.style.top = `${logoCenterY - BURST_Y * h}px`;
+        video.style.transform = 'translateX(-50%)';
+    };
+    document.addEventListener('DOMContentLoaded', placeVideo);
+    window.addEventListener('resize', placeVideo);
+
     let finished = false;
     const FADE_MS = 1400;     // 動画が消えるまでの時間（intro.css の transition と合わせる）
     const HANDOFF_SEC = 0.6;  // 動画の終わりの何秒前から消し始めるか

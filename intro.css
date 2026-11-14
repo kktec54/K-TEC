@@ -15,12 +15,23 @@
   pointer-events: none;
 }
 
-/* 背景が白い動画なので、縦長の画面では上下を白で埋める */
+/* 画面に収まる大きさで置く。縦の位置は intro.js が、最後の光がロゴの真ん中に重なるように合わせる（#56）
+   端が切れて見えないよう、上下と左右の端を白へぼかす */
 .intro-video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(100vw, 177.78vh);
+  height: auto;
+  aspect-ratio: 16 / 9;
   background: #fff;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%),
+                      linear-gradient(to right, transparent 0%, #000 4%, #000 96%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%),
+              linear-gradient(to right, transparent 0%, #000 4%, #000 96%, transparent 100%);
+  mask-composite: intersect;
 }
 
 .intro-skip {
